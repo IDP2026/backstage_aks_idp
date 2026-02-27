@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: idp2026/backstage_aks_idp
+  IMAGE_NAME: idp2026/backstage_idp
 
 jobs:
   build:
