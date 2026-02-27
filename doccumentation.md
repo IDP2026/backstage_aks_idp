@@ -2749,3 +2749,522 @@ Réponds juste à ceci :
     2. PostgreSQL = oui / non
 
 Et je te génère **LE PACK YAML FINAL**, sans erreur, prêt à appliquer dans ton AKS.
+
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ npx @backstage/create-app@latest --skip-install
+Need to install the following packages:
+@backstage/create-app@0.7.9
+Ok to proceed? (y) y
+
+npm warn deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+? Enter a name for the app [required] kuka-platform
+
+Creating the app...
+
+ Checking if the directory is available:
+  checking      kuka-platform ✔ 
+
+ Creating a temporary app directory:
+
+ Preparing files:
+  copying       .dockerignore ✔ 
+  copying       .eslintignore ✔ 
+  templating    .eslintrc.js.hbs ✔ 
+  templating    .gitignore.hbs ✔ 
+  copying       .prettierignore ✔ 
+  templating    .yarnrc.yml.hbs ✔ 
+  copying       README.md ✔ 
+  copying       app-config.local.yaml ✔ 
+  templating    app-config.yaml.hbs ✔ 
+  templating    backstage.json.hbs ✔ 
+  templating    catalog-info.yaml.hbs ✔ 
+  templating    package.json.hbs ✔ 
+  copying       playwright.config.ts ✔ 
+  copying       tsconfig.json ✔ 
+  copying       yarn.lock ✔ 
+  copying       app-config.production.yaml ✔ 
+  copying       README.md ✔ 
+  copying       yarn-4.4.1.cjs ✔ 
+  copying       org.yaml ✔ 
+  copying       entities.yaml ✔ 
+  copying       template.yaml ✔ 
+  copying       catalog-info.yaml ✔ 
+  copying       index.js ✔ 
+  copying       package.json ✔ 
+  copying       README.md ✔ 
+  templating    .eslintrc.js.hbs ✔ 
+  copying       Dockerfile ✔ 
+  copying       README.md ✔ 
+  templating    package.json.hbs ✔ 
+  copying       index.ts ✔ 
+  copying       .eslintignore ✔ 
+  templating    .eslintrc.js.hbs ✔ 
+  templating    package.json.hbs ✔ 
+  copying       android-chrome-192x192.png ✔ 
+  copying       apple-touch-icon.png ✔ 
+  copying       favicon-16x16.png ✔ 
+  copying       favicon-32x32.png ✔ 
+  copying       favicon.ico ✔ 
+  copying       index.html ✔ 
+  copying       manifest.json ✔ 
+  copying       robots.txt ✔ 
+  copying       safari-pinned-tab.svg ✔ 
+  copying       app.test.ts ✔ 
+  copying       App.test.tsx ✔ 
+  copying       App.tsx ✔ 
+  copying       apis.ts ✔ 
+  copying       index.tsx ✔ 
+  copying       setupTests.ts ✔ 
+  copying       LogoIcon.tsx ✔ 
+  copying       Root.tsx ✔ 
+  copying       index.ts ✔ 
+  copying       LogoFull.tsx ✔ 
+  copying       EntityPage.tsx ✔ 
+  copying       SearchPage.tsx ✔ 
+
+ Moving to final location:
+  moving        kuka-platform ✔ 
+  fetching      yarn.lock seed ✔ 
+
+🥇  Successfully created kuka-platform
+
+
+ All set! Now you might want to:
+  Install the dependencies: cd kuka-platform && yarn install
+  Run the app: cd kuka-platform && yarn start
+  Set up the software catalog: https://backstage.io/docs/features/software-catalog/configuration
+  Add authentication: https://backstage.io/docs/auth/
+
+npm notice
+npm notice New minor version of npm available! 11.6.2 -> 11.11.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.11.0
+npm notice To update run: npm install -g npm@11.11.0
+npm notice
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ git add .
+git commit -m "Initial Backstage application"
+git push
+[main 16ae153] Initial Backstage application
+ 53 files changed, 2815 insertions(+)
+ create mode 100644 kuka-platform/.dockerignore
+ create mode 100644 kuka-platform/.eslintignore
+ create mode 100644 kuka-platform/.eslintrc.js
+ create mode 100644 kuka-platform/.gitignore
+ create mode 100644 kuka-platform/.prettierignore
+ create mode 100644 kuka-platform/.yarn/releases/yarn-4.4.1.cjs
+ create mode 100644 kuka-platform/.yarnrc.yml
+ create mode 100644 kuka-platform/README.md
+ create mode 100644 kuka-platform/app-config.production.yaml
+ create mode 100644 kuka-platform/app-config.yaml
+ create mode 100644 kuka-platform/backstage.json
+ create mode 100644 kuka-platform/catalog-info.yaml
+ create mode 100644 kuka-platform/examples/entities.yaml
+ create mode 100644 kuka-platform/examples/org.yaml
+ create mode 100644 kuka-platform/examples/template/content/catalog-info.yaml
+ create mode 100644 kuka-platform/examples/template/content/index.js
+ create mode 100644 kuka-platform/examples/template/content/package.json
+ create mode 100644 kuka-platform/examples/template/template.yaml
+ create mode 100644 kuka-platform/package.json
+ create mode 100644 kuka-platform/packages/README.md
+ create mode 100644 kuka-platform/packages/app/.eslintignore
+ create mode 100644 kuka-platform/packages/app/.eslintrc.js
+ create mode 100644 kuka-platform/packages/app/e2e-tests/app.test.ts
+ create mode 100644 kuka-platform/packages/app/package.json
+ create mode 100644 kuka-platform/packages/app/public/android-chrome-192x192.png
+ create mode 100644 kuka-platform/packages/app/public/apple-touch-icon.png
+ create mode 100644 kuka-platform/packages/app/public/favicon-16x16.png
+ create mode 100644 kuka-platform/packages/app/public/favicon-32x32.png
+ create mode 100644 kuka-platform/packages/app/public/favicon.ico
+ create mode 100644 kuka-platform/packages/app/public/index.html
+ create mode 100644 kuka-platform/packages/app/public/manifest.json
+ create mode 100644 kuka-platform/packages/app/public/robots.txt
+ create mode 100644 kuka-platform/packages/app/public/safari-pinned-tab.svg
+ create mode 100644 kuka-platform/packages/app/src/App.test.tsx
+ create mode 100644 kuka-platform/packages/app/src/App.tsx
+ create mode 100644 kuka-platform/packages/app/src/apis.ts
+ create mode 100644 kuka-platform/packages/app/src/components/Root/LogoFull.tsx
+ create mode 100644 kuka-platform/packages/app/src/components/Root/LogoIcon.tsx
+ create mode 100644 kuka-platform/packages/app/src/components/Root/Root.tsx
+ create mode 100644 kuka-platform/packages/app/src/components/Root/index.ts
+ create mode 100644 kuka-platform/packages/app/src/components/catalog/EntityPage.tsx
+ create mode 100644 kuka-platform/packages/app/src/components/search/SearchPage.tsx
+ create mode 100644 kuka-platform/packages/app/src/index.tsx
+ create mode 100644 kuka-platform/packages/app/src/setupTests.ts
+ create mode 100644 kuka-platform/packages/backend/.eslintrc.js
+ create mode 100644 kuka-platform/packages/backend/Dockerfile
+ create mode 100644 kuka-platform/packages/backend/README.md
+ create mode 100644 kuka-platform/packages/backend/package.json
+ create mode 100644 kuka-platform/packages/backend/src/index.ts
+ create mode 100644 kuka-platform/playwright.config.ts
+ create mode 100644 kuka-platform/plugins/README.md
+ create mode 100644 kuka-platform/tsconfig.json
+ create mode 100644 kuka-platform/yarn.lock
+Enumerating objects: 73, done.
+Counting objects: 100% (73/73), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (57/57), done.
+Writing objects: 100% (72/72), 1.00 MiB | 8.47 MiB/s, done.
+Total 72 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/IDP2026/backstage_aks_idp
+   5661cdb..16ae153  main -> main
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ # ---------- Stage 1: Builder ----------
+FROM node:18-alpine AS builder
+WORKDIR /workspace
+ENV YARN_CACHE_FOLDER=/workspace/.yarn-cache
+
+COPY . .
+RUN corepack enable && corepack prepare yarn@stable --activate
+RUN yarn install --frozen-lockfile
+RUN yarn tsc
+RUN yarn build
+
+# ---------- Stage 2: Runner ----------
+FROM node:18-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=7007
+
+COPY --from=builder /workspace/packages/backend/dist ./packages/backend/dist
+COPY --from=builder /workspace/packages/backend/package.json ./packages/backend/package.json
+COPY --from=builder /workspace/yarn.lock ./yarn.lock
+COPY --from=builder /workspace/package.json ./package.json
+
+RUN corepack enable && corepack prepare yarn@stable --activate
+RUN yarn workspaces focus @backstage/backend --production
+
+EXPOSE 7007
+CMD ["node", "packages/backend/dist/index.cjs"]
+bash: FROM: command not found
+bash: WORKDIR: command not found
+bash: ENV: command not found
+bash: COPY: command not found
+bash: RUN: command not found
+bash: RUN: command not found
+bash: RUN: command not found
+bash: RUN: command not found
+bash: FROM: command not found
+bash: WORKDIR: command not found
+bash: ENV: command not found
+bash: ENV: command not found
+bash: COPY: command not found
+bash: COPY: command not found
+bash: COPY: command not found
+bash: COPY: command not found
+bash: RUN: command not found
+bash: RUN: command not found
+bash: EXPOSE: command not found
+bash: CMD: command not found
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ git add Dockerfile
+git commit -m "Add Dockerfile for Backstage build"
+git push
+[main 4c49d61] Add Dockerfile for Backstage build
+ 1 file changed, 27 insertions(+)
+ create mode 100644 Dockerfile
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 694 bytes | 694.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/IDP2026/backstage_aks_idp
+   16ae153..4c49d61  main -> main
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ mkdir -p .github/workflows
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ touch .github/workflows/build-backstage.yml
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ name: Build & Push Backstage Image (GHCR)
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch: {}
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/backstage
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ env.IMAGE_NAME }}
+          labels: ${{ steps.meta.outputs.labels }}
+bash: syntax error near unexpected token `('
+bash: on:: command not found
+bash: push:: command not found
+bash: branches:: command not found
+bash: workflow_dispatch:: command not found
+bash: env:: command not found
+bash: REGISTRY:: command not found
+bash: ${{ github.repository_owner }}/backstage: bad substitution
+bash: jobs:: command not found
+bash: build:: command not found
+bash: runs-on:: command not found
+bash: permissions:: command not found
+bash: contents:: command not found
+bash: packages:: command not found
+bash: steps:: command not found
+bash: -: command not found
+bash: uses:: command not found
+bash: -: command not found
+bash: uses:: command not found
+bash: with:: command not found
+bash: registry:: command not found
+bash: ${{ github.repository_owner }}: bad substitution
+bash: ${{ secrets.GITHUB_TOKEN }}: bad substitution
+bash: -: command not found
+bash: id:: command not found
+bash: uses:: command not found
+bash: with:: command not found
+bash: ghcr.io/${{ env.IMAGE_NAME }}: bad substitution
+bash: tags:: command not found
+bash: -: command not found
+bash: uses:: command not found
+bash: with:: command not found
+bash: context:: command not found
+bash: push:: command not found
+bash: ${{ steps.meta.outputs.tags }}: bad substitution
+bash: ${{ steps.meta.outputs.labels }}: bad substitution
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ git add .github/workflows/build-backstage.yml
+git commit -m "Add GHCR build workflow for Backstage"
+git push
+[main 7d39cff] Add GHCR build workflow for Backstage
+ 1 file changed, 46 insertions(+)
+ create mode 100644 .github/workflows/build-backstage.yml
+Enumerating objects: 6, done.
+Counting objects: 100% (6/6), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (5/5), 877 bytes | 877.00 KiB/s, done.
+Total 5 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/IDP2026/backstage_aks_idp
+   4c49d61..7d39cff  main -> main
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ npx @backstage/create-app@latest --skip-install
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ mv kuka-platform/* .
+mv kuka-platform/.* . 2>/dev/null || true
+rmdir kuka-platform
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ ls -a
+.              .eslintrc.js  .prettierignore  README.md                   backstage.json     package.json          tsconfig.json
+..             .git          .yarn            app-config.local.yaml       catalog-info.yaml  packages              yarn.lock
+.dockerignore  .github       .yarnrc.yml      app-config.production.yaml  doccumentation.md  playwright.config.ts
+.eslintignore  .gitignore    Dockerfile       app-config.yaml             examples           plugins
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ git add .
+git commit -m "Move Backstage project to repo root"
+git push
+[main c1e0475] Move Backstage project to repo root
+ 53 files changed, 0 insertions(+), 0 deletions(-)
+ rename kuka-platform/.dockerignore => .dockerignore (100%)
+ rename kuka-platform/.eslintignore => .eslintignore (100%)
+ rename kuka-platform/.eslintrc.js => .eslintrc.js (100%)
+ rename kuka-platform/.gitignore => .gitignore (100%)
+ rename kuka-platform/.prettierignore => .prettierignore (100%)
+ rename {kuka-platform/.yarn => .yarn}/releases/yarn-4.4.1.cjs (100%)
+ rename kuka-platform/.yarnrc.yml => .yarnrc.yml (100%)
+ rename kuka-platform/README.md => README.md (100%)
+ rename kuka-platform/app-config.production.yaml => app-config.production.yaml (100%)
+ rename kuka-platform/app-config.yaml => app-config.yaml (100%)
+ rename kuka-platform/backstage.json => backstage.json (100%)
+ rename kuka-platform/catalog-info.yaml => catalog-info.yaml (100%)
+ rename {kuka-platform/examples => examples}/entities.yaml (100%)
+ rename {kuka-platform/examples => examples}/org.yaml (100%)
+ rename {kuka-platform/examples => examples}/template/content/catalog-info.yaml (100%)
+ rename {kuka-platform/examples => examples}/template/content/index.js (100%)
+ rename {kuka-platform/examples => examples}/template/content/package.json (100%)
+ rename {kuka-platform/examples => examples}/template/template.yaml (100%)
+ rename kuka-platform/package.json => package.json (100%)
+ rename {kuka-platform/packages => packages}/README.md (100%)
+ rename {kuka-platform/packages => packages}/app/.eslintignore (100%)
+ rename {kuka-platform/packages => packages}/app/.eslintrc.js (100%)
+ rename {kuka-platform/packages => packages}/app/e2e-tests/app.test.ts (100%)
+ rename {kuka-platform/packages => packages}/app/package.json (100%)
+ rename {kuka-platform/packages => packages}/app/public/android-chrome-192x192.png (100%)
+ rename {kuka-platform/packages => packages}/app/public/apple-touch-icon.png (100%)
+ rename {kuka-platform/packages => packages}/app/public/favicon-16x16.png (100%)
+ rename {kuka-platform/packages => packages}/app/public/favicon-32x32.png (100%)
+ rename {kuka-platform/packages => packages}/app/public/favicon.ico (100%)
+ rename {kuka-platform/packages => packages}/app/public/index.html (100%)
+ rename {kuka-platform/packages => packages}/app/public/manifest.json (100%)
+ rename {kuka-platform/packages => packages}/app/public/robots.txt (100%)
+ rename {kuka-platform/packages => packages}/app/public/safari-pinned-tab.svg (100%)
+ rename {kuka-platform/packages => packages}/app/src/App.test.tsx (100%)
+ rename {kuka-platform/packages => packages}/app/src/App.tsx (100%)
+ rename {kuka-platform/packages => packages}/app/src/apis.ts (100%)
+ rename {kuka-platform/packages => packages}/app/src/components/Root/LogoFull.tsx (100%)
+ rename {kuka-platform/packages => packages}/app/src/components/Root/LogoIcon.tsx (100%)
+ rename {kuka-platform/packages => packages}/app/src/components/Root/Root.tsx (100%)
+ rename {kuka-platform/packages => packages}/app/src/components/Root/index.ts (100%)
+ rename {kuka-platform/packages => packages}/app/src/components/catalog/EntityPage.tsx (100%)
+ rename {kuka-platform/packages => packages}/app/src/components/search/SearchPage.tsx (100%)
+ rename {kuka-platform/packages => packages}/app/src/index.tsx (100%)
+ rename {kuka-platform/packages => packages}/app/src/setupTests.ts (100%)
+ rename {kuka-platform/packages => packages}/backend/.eslintrc.js (100%)
+ rename {kuka-platform/packages => packages}/backend/Dockerfile (100%)
+ rename {kuka-platform/packages => packages}/backend/README.md (100%)
+ rename {kuka-platform/packages => packages}/backend/package.json (100%)
+ rename {kuka-platform/packages => packages}/backend/src/index.ts (100%)
+ rename kuka-platform/playwright.config.ts => playwright.config.ts (100%)
+ rename {kuka-platform/plugins => plugins}/README.md (100%)
+ rename kuka-platform/tsconfig.json => tsconfig.json (100%)
+ rename kuka-platform/yarn.lock => yarn.lock (100%)
+Enumerating objects: 72, done.
+Counting objects: 100% (72/72), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (56/56), done.
+Writing objects: 100% (71/71), 1.00 MiB | 4.42 MiB/s, done.
+Total 71 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/IDP2026/backstage_aks_idp
+   7d39cff..c1e0475  main -> main
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ mv kuka-platform/* .
+mv kuka-platform/.* . 2>/dev/null || true
+rmdir kuka-platform
+
+git add .
+git commit -m "Move Backstage project to repo root"
+git push
+mv: cannot stat 'kuka-platform/*': No such file or directory
+rmdir: failed to remove 'kuka-platform': No such file or directory
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+Everything up-to-date
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ git add Dockerfile
+git commit -m "Fix Dockerfile for Yarn 4 (--immutable)"
+git push
+[main 5229af1] Fix Dockerfile for Yarn 4 (--immutable)
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 377 bytes | 377.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/IDP2026/backstage_aks_idp
+   c1e0475..5229af1  main -> main
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ git add Dockerfile
+git commit -m "Fix Dockerfile for Backstage (correct Yarn 4 workflow)"
+git push
+[main dc0ca5c] Fix Dockerfile for Backstage (correct Yarn 4 workflow)
+ 1 file changed, 15 insertions(+), 6 deletions(-)
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 558 bytes | 558.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/IDP2026/backstage_aks_idp
+   5229af1..dc0ca5c  main -> main
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ yarn install
+➤ YN0065: Yarn will periodically gather anonymous telemetry: https://yarnpkg.com/advanced/telemetry
+➤ YN0065: Run yarn config set --home enableTelemetry 0 to disable
+
+➤ YN0000: · Yarn 4.4.1
+➤ YN0000: ┌ Resolution step
+➤ YN0085: │ + @backstage/app-defaults@npm:1.7.5, @backstage/backend-defaults@npm:0.15.2, @backstage/catalog-model@npm:1.7.6, and 2957 more.
+➤ YN0000: └ Completed in 37s 486ms
+➤ YN0000: ┌ Post-resolution validation
+➤ YN0060: │ @testing-library/react is listed by your project with version 14.3.1 (pc9eb9), which doesn't satisfy what @backstage/test-utils requests (^16.0.0).
+➤ YN0060: │ react is listed by your project with version 18.3.1 (pd98da), which doesn't satisfy what @material-ui/core and other dependencies request (but they have non-overlapping ranges!).
+➤ YN0060: │ react-dom is listed by your project with version 18.3.1 (pfa800), which doesn't satisfy what @material-ui/core and other dependencies request (but they have non-overlapping ranges!).
+➤ YN0002: │ app@workspace:packages/app doesn't provide @types/react (pceee1), requested by @backstage/app-defaults and other dependencies.
+➤ YN0002: │ app@workspace:packages/app doesn't provide jest (p99cdc), requested by @backstage/cli.
+➤ YN0002: │ app@workspace:packages/app doesn't provide webpack (p299d9), requested by @backstage/cli.
+➤ YN0002: │ backend@workspace:packages/backend doesn't provide jest (p35ee3), requested by @backstage/cli.
+➤ YN0002: │ backend@workspace:packages/backend doesn't provide webpack (p00f29), requested by @backstage/cli.
+➤ YN0002: │ root@workspace:. doesn't provide webpack (p40c38), requested by @backstage/cli.
+➤ YN0086: │ Some peer dependencies are incorrectly met by your project; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code.
+➤ YN0086: │ Some peer dependencies are incorrectly met by dependencies; run yarn explain peer-requirements for details.
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Fetch step
+➤ YN0066: │ typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=8c6c40: Cannot apply hunk #1
+➤ YN0013: │ 2872 packages were added to the project (+ 1 GiB).
+➤ YN0000: └ Completed in 45s 92ms
+➤ YN0000: ┌ Link step
+➤ YN0007: │ esbuild@npm:0.27.3 must be built because it never has been before or the last one failed
+➤ YN0007: │ @swc/core@npm:1.15.17 [ada1b] must be built because it never has been before or the last one failed
+➤ YN0007: │ core-js@npm:3.48.0 must be built because it never has been before or the last one failed
+➤ YN0007: │ better-sqlite3@npm:12.6.2 must be built because it never has been before or the last one failed
+➤ YN0007: │ isolated-vm@npm:6.0.2 must be built because it never has been before or the last one failed
+➤ YN0007: │ unrs-resolver@npm:1.11.1 must be built because it never has been before or the last one failed
+➤ YN0007: │ @scarf/scarf@npm:1.4.0 must be built because it never has been before or the last one failed
+➤ YN0007: │ protobufjs@npm:7.5.4 must be built because it never has been before or the last one failed
+➤ YN0007: │ core-js-pure@npm:3.48.0 must be built because it never has been before or the last one failed
+➤ YN0007: │ tree-sitter@npm:0.22.4 must be built because it never has been before or the last one failed
+➤ YN0007: │ tree-sitter@npm:0.21.1 must be built because it never has been before or the last one failed
+➤ YN0007: │ core-js@npm:2.6.12 must be built because it never has been before or the last one failed
+➤ YN0007: │ cpu-features@npm:0.0.10 must be built because it never has been before or the last one failed
+➤ YN0007: │ @tree-sitter-grammars/tree-sitter-yaml@npm:0.7.1 [20ec6] must be built because it never has been before or the last one failed
+➤ YN0007: │ ssh2@npm:1.17.0 must be built because it never has been before or the last one failed
+➤ YN0007: │ tree-sitter-json@npm:0.24.8 [43b4a] must be built because it never has been before or the last one failed
+➤ YN0000: └ Completed in 2m 13s
+➤ YN0000: · Done with warnings in 3m 37s
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ git add yarn.lock .yarn .pnp.cjs || true
+git commit -m "Update yarn.lock after local yarn install"
+git push
+fatal: pathspec '.pnp.cjs' did not match any files
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   yarn.lock
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Everything up-to-date
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ yarn install
+git add yarn.lock .yarn
+git commit -m "Fix yarn.lock"
+git push
+➤ YN0000: · Yarn 4.4.1
+➤ YN0000: ┌ Resolution step
+➤ YN0000: └ Completed in 0s 841ms
+➤ YN0000: ┌ Post-resolution validation
+➤ YN0060: │ @testing-library/react is listed by your project with version 14.3.1 (pc9eb9), which doesn't satisfy what @backstage/test-utils requests (^16.0.0).
+➤ YN0060: │ react is listed by your project with version 18.3.1 (pd98da), which doesn't satisfy what @material-ui/core and other dependencies request (but they have non-overlapping ranges!).
+➤ YN0060: │ react-dom is listed by your project with version 18.3.1 (pfa800), which doesn't satisfy what @material-ui/core and other dependencies request (but they have non-overlapping ranges!).
+➤ YN0002: │ app@workspace:packages/app doesn't provide @types/react (pceee1), requested by @backstage/app-defaults and other dependencies.
+➤ YN0002: │ app@workspace:packages/app doesn't provide jest (p99cdc), requested by @backstage/cli.
+➤ YN0002: │ app@workspace:packages/app doesn't provide webpack (p299d9), requested by @backstage/cli.
+➤ YN0002: │ backend@workspace:packages/backend doesn't provide jest (p35ee3), requested by @backstage/cli.
+➤ YN0002: │ backend@workspace:packages/backend doesn't provide webpack (p00f29), requested by @backstage/cli.
+➤ YN0002: │ root@workspace:. doesn't provide webpack (p40c38), requested by @backstage/cli.
+➤ YN0086: │ Some peer dependencies are incorrectly met by your project; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code.
+➤ YN0086: │ Some peer dependencies are incorrectly met by dependencies; run yarn explain peer-requirements for details.
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Fetch step
+➤ YN0000: └ Completed in 8s 711ms
+➤ YN0000: ┌ Link step
+➤ YN0000: └ Completed in 1s 183ms
+➤ YN0000: · Done with warnings in 11s 189ms
+[main 24e4911] Fix yarn.lock
+ 1 file changed, 33204 insertions(+), 6 deletions(-)
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 345.71 KiB | 3.26 MiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/IDP2026/backstage_aks_idp
+   dc0ca5c..24e4911  main -> main
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ ^C
+@IDP2026 ➜ /workspaces/backstage_aks_idp (main) $ 
