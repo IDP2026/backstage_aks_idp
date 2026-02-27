@@ -5,7 +5,10 @@ ENV YARN_CACHE_FOLDER=/workspace/.yarn-cache
 
 COPY . .
 RUN corepack enable && corepack prepare yarn@stable --activate
-RUN yarn install --frozen-lockfile
+
+# IMPORTANT : Yarn 4 => utiliser --immutable
+RUN yarn install --immutable
+
 RUN yarn tsc
 RUN yarn build
 
