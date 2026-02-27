@@ -1,39 +1,48 @@
-# ---------- Stage 1: Builder ----------
-FROM node:18-alpine AS builder
-WORKDIR /workspace
+# ---- Builder ----
+FROM node:22-bookworm-slim AS builder
 
-# Enable corepack and yarn
-RUN corepack enable && corepack prepare yarn@stable --activate
+ENV PYTHON=/usr/bin/python3
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 g++ build-essential \
+  && rm -rf /var/lib/apt/lists/*
 
-# Copy all files
-COPY . .
+WORKDIR /app
 
-# Install dependencies (Yarn 4 way)
+# Enable yarn via corepack
+RUN corepack enable
+
+# Copy only what we need first (better cache)
+COPY package.json yarn.lock .yarnrc.yml backstage.json ./
+COPY .yarn ./.yarn
+COPY packages ./packages
+COPY plugins ./plugins
+COPY examples ./examples
+COPY app-config*.yaml ./
+
+# Install deps
 RUN yarn install --immutable
 
-# Build TypeScript & packages
-RUN yarn tsc
+# Build backend bundle (what we need for runtime image)
+RUN yarn build:backend
 
-# Build backend bundle
-RUN yarn workspace backend build
-RUN yarn workspace backend bundle
+# ---- Runtime ----
+FROM node:22-bookworm-slim
 
-# ---------- Stage 2: Runner ----------
-FROM node:18-alpine
-WORKDIR /app
 ENV NODE_ENV=production
-ENV PORT=7007
+ENV NODE_OPTIONS="--no-node-snapshot"
+WORKDIR /app
 
-# Copy only the backend artifact
-COPY --from=builder /workspace/packages/backend/dist ./packages/backend/dist
-COPY --from=builder /workspace/packages/backend/package.json ./packages/backend/package.json
-COPY --from=builder /workspace/package.json ./package.json
-COPY --from=builder /workspace/yarn.lock ./yarn.lock
+# Enable yarn via corepack (for workspace focus)
+RUN corepack enable
 
-RUN corepack enable && corepack prepare yarn@stable --activate
+# Copy yarn setup and skeleton/bundle artifacts
+COPY --from=builder /app/package.json /app/yarn.lock /app/.yarnrc.yml /app/backstage.json ./
+COPY --from=builder /app/.yarn ./.yarn
+COPY --from=builder /app/packages/backend/dist ./packages/backend/dist
+COPY --from=builder /app/app-config*.yaml ./
 
-# Install only production deps for backend
-RUN yarn workspaces focus backend --production
+# Install only production deps
+RUN yarn workspaces focus --all --production
 
 EXPOSE 7007
-CMD ["node", "packages/backend/dist/index.cjs"]
+CMD ["node", "packages/backend", "--config", "app-config.yaml", "--config", "app-config.production.yaml"]
