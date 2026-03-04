@@ -3454,7 +3454,632 @@ Je reste avec toi jusqu’à la fin.
 
 
 
+==============================================================
+
+============================================================
+
+Koffitse — **pas de panique**, ton erreur est *normale* dans un environnement d’entreprise qui utilise un **proxy TLS intercepté** (certificat auto‑signé dans la chaîne).
+
+👉 **Ubuntu rejette la connexion HTTPS vers Docker.com car ton entreprise injecte son propre certificat.**
+
+On va corriger ça proprement.
+
+***
+
+# ✅ SOLUTION 1 — *La plus simple pour toi*
+
+### ➜ Utiliser l’installation Docker via APT **sans curl**
+
+Ubuntu possède déjà les paquets Docker dans ses dépôts officiels.  
+Ce ne sont pas les plus récents, mais **ils sont 100% suffisants pour Backstage**.
+
+Installe Docker **sans passer par docker.com** :
+
+```bash
+sudo apt update
+sudo apt install -y docker.io
+```
+
+Ensuite :
+
+```bash
+sudo systemctl enable docker
+sudo systemctl start docker
+sudo usermod -aG docker $USER
+```
+
+Reconnecte‑toi (ferme le terminal, rouvre-le), puis vérifie :
+
+```bash
+docker --version
+```
+
+Tu devrais avoir un truc comme :
+
+    Docker version 24.x.x
+
+➡️ **C'est largement suffisant** pour builder ton image Backstage et la pousser sur Docker Hub.
+
+***
+
+# ✅ SOLUTION 2 — Si tu veux absolument la dernière version Docker
+
+Mais ça implique **d’ajouter le certificat de ta firme / proxy MITM** dans Ubuntu.
+
+Si tu veux faire cette méthode, je peux te guider.  
+Tu dois juste m’envoyer :
+
+👉 **ton certificat racine (.crt ou .pem)**  
+ou  
+👉 la commande suivante et coller le résultat :
+
+```bash
+echo | openssl s_client -showcerts -servername download.docker.com -connect download.docker.com:443
+```
+
+***
+
+# 🎯 BUT : AVANCER RAPIDEMENT
+
+Backstage n’a **pas besoin** de Docker 25 ou Docker CE.
+
+Donc **solution recommandée (très simple)** :
+
+### ✔ Installer Docker via apt
+
+```bash
+sudo apt install -y docker.io
+```
+
+### ✔ Ajouter ton utilisateur
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+### ✔ Vérifier
+
+```bash
+docker run hello-world
+```
+
+***
+
+# 👉 Koffitse, fais juste ceci :
+
+**Colle ici la sortie de :**
+
+    docker --version
+
+Après installation de `docker.io`.  
+Ensuite, on enchaîne immédiatement avec Backstage. 🚀
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
 
 
+```bash
 
+koffi@PC25320:~$ LS LA
+LS: command not found
+koffi@PC25320:~$ LS -LA
+LS: command not found
+koffi@PC25320:~$ ls -la
+total 28
+drwxr-x--- 3 koffi koffi 4096 Mar  2 16:43 .
+drwxr-xr-x 3 root  root  4096 Mar  2 16:28 ..
+-rw------- 1 koffi koffi   13 Mar  2 16:43 .bash_history
+-rw-r--r-- 1 koffi koffi  220 Mar  2 16:28 .bash_logout
+-rw-r--r-- 1 koffi koffi 3771 Mar  2 16:28 .bashrc
+drwx------ 2 koffi koffi 4096 Mar  2 16:29 .cache
+-rw-rw-r-- 1 koffi koffi    0 Mar  2 16:29 .motd_shown
+-rw-r--r-- 1 koffi koffi  807 Mar  2 16:28 .profile
+koffi@PC25320:~$ ls -la
+total 32
+drwxr-x--- 4 koffi koffi 4096 Mar  2 16:50 .
+drwxr-xr-x 3 root  root  4096 Mar  2 16:28 ..
+-rw------- 1 koffi koffi   13 Mar  2 16:43 .bash_history
+-rw-r--r-- 1 koffi koffi  220 Mar  2 16:28 .bash_logout
+-rw-r--r-- 1 koffi koffi 3771 Mar  2 16:28 .bashrc
+drwx------ 2 koffi koffi 4096 Mar  2 16:29 .cache
+-rw-rw-r-- 1 koffi koffi    0 Mar  2 16:29 .motd_shown
+-rw-r--r-- 1 koffi koffi  807 Mar  2 16:28 .profile
+drwxr-xr-x 2 koffi koffi 4096 Mar  2 16:50 test
+koffi@PC25320:~$ sudo apt update
+sudo apt install -y ca-certificates curl gnupg lsb-release
+[sudo] password for koffi:
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Get:2 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Get:3 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+Get:4 http://archive.ubuntu.com/ubuntu noble/universe amd64 Packages [15.0 MB]
+Get:5 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Get:6 http://archive.ubuntu.com/ubuntu noble/universe Translation-en [5982 kB]
+Get:7 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1503 kB]
+Get:8 http://archive.ubuntu.com/ubuntu noble/universe amd64 Components [3871 kB]
+Get:9 http://archive.ubuntu.com/ubuntu noble/universe amd64 c-n-f Metadata [301 kB]
+Get:10 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [269 kB]
+Get:11 http://archive.ubuntu.com/ubuntu noble/multiverse Translation-en [118 kB]
+Get:12 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Components [35.0 kB]
+Get:13 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 c-n-f Metadata [8328 B]
+Get:14 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1804 kB]
+Get:15 http://archive.ubuntu.com/ubuntu noble-updates/main Translation-en [332 kB]
+Get:16 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [175 kB]
+Get:17 http://security.ubuntu.com/ubuntu noble-security/main Translation-en [240 kB]
+Get:18 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 c-n-f Metadata [16.5 kB]
+Get:19 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1564 kB]
+Get:20 http://archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [318 kB]
+Get:21 http://security.ubuntu.com/ubuntu noble-security/main amd64 Components [21.5 kB]
+Get:22 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [386 kB]
+Get:23 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 c-n-f Metadata [32.9 kB]
+Get:24 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2747 kB]
+Get:25 http://security.ubuntu.com/ubuntu noble-security/main amd64 c-n-f Metadata [9932 B]
+Get:26 http://archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [632 kB]
+Get:27 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]
+Get:28 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 c-n-f Metadata [556 B]
+Get:29 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [32.1 kB]
+Get:30 http://archive.ubuntu.com/ubuntu noble-updates/multiverse Translation-en [7044 B]
+Get:31 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+Get:32 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 c-n-f Metadata [496 B]
+Get:33 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [40.4 kB]
+Get:34 http://archive.ubuntu.com/ubuntu noble-backports/main Translation-en [9208 B]
+Get:35 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [7284 B]
+Get:36 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 c-n-f Metadata [368 B]
+Get:37 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [29.5 kB]
+Get:38 http://archive.ubuntu.com/ubuntu noble-backports/universe Translation-en [17.9 kB]
+Get:39 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [10.5 kB]
+Get:40 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 c-n-f Metadata [1444 B]
+Get:41 http://archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [216 B]
+Get:42 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [975 kB]
+Get:43 http://archive.ubuntu.com/ubuntu noble-backports/restricted amd64 c-n-f Metadata [116 B]
+Get:44 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]
+Get:45 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 c-n-f Metadata [116 B]
+Get:46 http://security.ubuntu.com/ubuntu noble-security/universe Translation-en [218 kB]
+Get:47 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Components [74.2 kB]
+Get:48 http://security.ubuntu.com/ubuntu noble-security/universe amd64 c-n-f Metadata [20.6 kB]
+Get:49 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2599 kB]
+Get:50 http://security.ubuntu.com/ubuntu noble-security/restricted Translation-en [600 kB]
+Get:51 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Components [212 B]
+Get:52 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 c-n-f Metadata [536 B]
+Get:53 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [28.8 kB]
+Get:54 http://security.ubuntu.com/ubuntu noble-security/multiverse Translation-en [6732 B]
+Get:55 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [212 B]
+Get:56 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 c-n-f Metadata [396 B]
+Fetched 40.5 MB in 6s (6596 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+209 packages can be upgraded. Run 'apt list --upgradable' to see them.
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+ca-certificates is already the newest version (20240203).
+ca-certificates set to manually installed.
+lsb-release is already the newest version (12.0-2).
+lsb-release set to manually installed.
+The following additional packages will be installed:
+  dirmngr gnupg-l10n gnupg-utils gpg gpg-agent gpg-wks-client gpgconf gpgsm gpgv keyboxd libcurl3t64-gnutls libcurl4t64
+Suggested packages:
+  pinentry-gnome3 tor parcimonie xloadimage gpg-wks-server scdaemon
+The following packages will be upgraded:
+  curl dirmngr gnupg gnupg-l10n gnupg-utils gpg gpg-agent gpg-wks-client gpgconf gpgsm gpgv keyboxd libcurl3t64-gnutls libcurl4t64
+14 upgraded, 0 newly installed, 0 to remove and 195 not upgraded.
+Need to get 3194 kB of archives.
+After this operation, 0 B of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gpg-wks-client amd64 2.4.4-2ubuntu17.4 [70.8 kB]
+Get:2 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 dirmngr amd64 2.4.4-2ubuntu17.4 [323 kB]
+Get:3 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gnupg-utils amd64 2.4.4-2ubuntu17.4 [109 kB]
+Get:4 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gpgsm amd64 2.4.4-2ubuntu17.4 [232 kB]
+Get:5 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gpg-agent amd64 2.4.4-2ubuntu17.4 [227 kB]
+Get:6 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gpg amd64 2.4.4-2ubuntu17.4 [565 kB]
+Get:7 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gpgconf amd64 2.4.4-2ubuntu17.4 [104 kB]
+Get:8 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gnupg all 2.4.4-2ubuntu17.4 [359 kB]
+Get:9 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 keyboxd amd64 2.4.4-2ubuntu17.4 [78.3 kB]
+Get:10 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gpgv amd64 2.4.4-2ubuntu17.4 [158 kB]
+Get:11 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 curl amd64 8.5.0-2ubuntu10.7 [227 kB]
+Get:12 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcurl4t64 amd64 8.5.0-2ubuntu10.7 [342 kB]
+Get:13 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 gnupg-l10n all 2.4.4-2ubuntu17.4 [66.4 kB]
+Get:14 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libcurl3t64-gnutls amd64 8.5.0-2ubuntu10.7 [334 kB]
+Fetched 3194 kB in 1s (2847 kB/s)
+(Reading database ... 40794 files and directories currently installed.)
+Preparing to unpack .../0-gpg-wks-client_2.4.4-2ubuntu17.4_amd64.deb ...
+Unpacking gpg-wks-client (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Preparing to unpack .../1-dirmngr_2.4.4-2ubuntu17.4_amd64.deb ...
+Unpacking dirmngr (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Preparing to unpack .../2-gnupg-utils_2.4.4-2ubuntu17.4_amd64.deb ...
+Unpacking gnupg-utils (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Preparing to unpack .../3-gpgsm_2.4.4-2ubuntu17.4_amd64.deb ...
+Unpacking gpgsm (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Preparing to unpack .../4-gpg-agent_2.4.4-2ubuntu17.4_amd64.deb ...
+Unpacking gpg-agent (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Preparing to unpack .../5-gpg_2.4.4-2ubuntu17.4_amd64.deb ...
+Unpacking gpg (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Preparing to unpack .../6-gpgconf_2.4.4-2ubuntu17.4_amd64.deb ...
+Unpacking gpgconf (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Preparing to unpack .../7-gnupg_2.4.4-2ubuntu17.4_all.deb ...
+Unpacking gnupg (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Preparing to unpack .../8-keyboxd_2.4.4-2ubuntu17.4_amd64.deb ...
+Unpacking keyboxd (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Preparing to unpack .../9-gpgv_2.4.4-2ubuntu17.4_amd64.deb ...
+Unpacking gpgv (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Setting up gpgv (2.4.4-2ubuntu17.4) ...
+(Reading database ... 40794 files and directories currently installed.)
+Preparing to unpack .../curl_8.5.0-2ubuntu10.7_amd64.deb ...
+Unpacking curl (8.5.0-2ubuntu10.7) over (8.5.0-2ubuntu10.6) ...
+Preparing to unpack .../libcurl4t64_8.5.0-2ubuntu10.7_amd64.deb ...
+Unpacking libcurl4t64:amd64 (8.5.0-2ubuntu10.7) over (8.5.0-2ubuntu10.6) ...
+Preparing to unpack .../gnupg-l10n_2.4.4-2ubuntu17.4_all.deb ...
+Unpacking gnupg-l10n (2.4.4-2ubuntu17.4) over (2.4.4-2ubuntu17) ...
+Preparing to unpack .../libcurl3t64-gnutls_8.5.0-2ubuntu10.7_amd64.deb ...
+Unpacking libcurl3t64-gnutls:amd64 (8.5.0-2ubuntu10.7) over (8.5.0-2ubuntu10.6) ...
+Setting up libcurl4t64:amd64 (8.5.0-2ubuntu10.7) ...
+Setting up libcurl3t64-gnutls:amd64 (8.5.0-2ubuntu10.7) ...
+Setting up gnupg-l10n (2.4.4-2ubuntu17.4) ...
+Setting up gpgconf (2.4.4-2ubuntu17.4) ...
+Setting up curl (8.5.0-2ubuntu10.7) ...
+Setting up gpg (2.4.4-2ubuntu17.4) ...
+Setting up gnupg-utils (2.4.4-2ubuntu17.4) ...
+Setting up gpg-agent (2.4.4-2ubuntu17.4) ...
+Setting up gpgsm (2.4.4-2ubuntu17.4) ...
+Setting up dirmngr (2.4.4-2ubuntu17.4) ...
+Setting up keyboxd (2.4.4-2ubuntu17.4) ...
+Setting up gnupg (2.4.4-2ubuntu17.4) ...
+Setting up gpg-wks-client (2.4.4-2ubuntu17.4) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Processing triggers for install-info (7.1-3build2) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.3) ...
+koffi@PC25320:~$ sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+curl: (60) SSL certificate problem: self-signed certificate in certificate chain
+More details here: https://curl.se/docs/sslcerts.html
 
+curl failed to verify the legitimacy of the server and therefore could not
+establish a secure connection to it. To learn more about this situation and
+how to fix it, please visit the web page mentioned above.
+gpg: no valid OpenPGP data found.
+koffi@PC25320:~$ sudo apt update
+sudo apt install -y docker.io
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+195 packages can be upgraded. Run 'apt list --upgradable' to see them.
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base iptables libip4tc2 libip6tc2 libnetfilter-conntrack3 libnfnetlink0 libnftables1 libnftnl11 nftables pigz runc ubuntu-fan
+Suggested packages:
+  ifupdown aufs-tools btrfs-progs cgroupfs-mount | cgroup-lite debootstrap docker-buildx docker-compose-v2 docker-doc rinse zfs-fuse | zfsutils firewalld
+The following NEW packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base docker.io iptables libip4tc2 libip6tc2 libnetfilter-conntrack3 libnfnetlink0 libnftables1 libnftnl11 nftables pigz runc ubuntu-fan
+0 upgraded, 16 newly installed, 0 to remove and 195 not upgraded.
+Need to get 77.1 MB of archives.
+After this operation, 293 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu noble/universe amd64 pigz amd64 2.8-1 [65.6 kB]
+Get:2 http://archive.ubuntu.com/ubuntu noble/main amd64 libip4tc2 amd64 1.8.10-3ubuntu2 [23.3 kB]
+Get:3 http://archive.ubuntu.com/ubuntu noble/main amd64 libip6tc2 amd64 1.8.10-3ubuntu2 [23.7 kB]
+Get:4 http://archive.ubuntu.com/ubuntu noble/main amd64 libnfnetlink0 amd64 1.0.2-2build1 [14.8 kB]
+Get:5 http://archive.ubuntu.com/ubuntu noble/main amd64 libnetfilter-conntrack3 amd64 1.0.9-6build1 [45.2 kB]
+Get:6 http://archive.ubuntu.com/ubuntu noble/main amd64 libnftnl11 amd64 1.2.6-2build1 [66.0 kB]
+Get:7 http://archive.ubuntu.com/ubuntu noble/main amd64 iptables amd64 1.8.10-3ubuntu2 [381 kB]
+Get:8 http://archive.ubuntu.com/ubuntu noble/main amd64 libnftables1 amd64 1.0.9-1build1 [358 kB]
+Get:9 http://archive.ubuntu.com/ubuntu noble/main amd64 nftables amd64 1.0.9-1build1 [69.8 kB]
+Get:10 http://archive.ubuntu.com/ubuntu noble/main amd64 bridge-utils amd64 1.7.1-1ubuntu2 [33.9 kB]
+Get:11 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 runc amd64 1.3.3-0ubuntu1~24.04.3 [8815 kB]
+Get:12 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 containerd amd64 1.7.28-0ubuntu1~24.04.2 [38.4 MB]
+Get:13 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 dns-root-data all 2024071801~ubuntu0.24.04.1 [5918 B]
+Get:14 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 dnsmasq-base amd64 2.90-2ubuntu0.1 [376 kB]
+Get:15 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 docker.io amd64 28.2.2-0ubuntu1~24.04.1 [28.3 MB]
+Get:16 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 ubuntu-fan all 0.12.16+24.04.1 [34.2 kB]
+Fetched 77.1 MB in 3s (28.1 MB/s)
+Preconfiguring packages ...
+Selecting previously unselected package pigz.
+(Reading database ... 40794 files and directories currently installed.)
+Preparing to unpack .../00-pigz_2.8-1_amd64.deb ...
+Unpacking pigz (2.8-1) ...
+Selecting previously unselected package libip4tc2:amd64.
+Preparing to unpack .../01-libip4tc2_1.8.10-3ubuntu2_amd64.deb ...
+Unpacking libip4tc2:amd64 (1.8.10-3ubuntu2) ...
+Selecting previously unselected package libip6tc2:amd64.
+Preparing to unpack .../02-libip6tc2_1.8.10-3ubuntu2_amd64.deb ...
+Unpacking libip6tc2:amd64 (1.8.10-3ubuntu2) ...
+Selecting previously unselected package libnfnetlink0:amd64.
+Preparing to unpack .../03-libnfnetlink0_1.0.2-2build1_amd64.deb ...
+Unpacking libnfnetlink0:amd64 (1.0.2-2build1) ...
+Selecting previously unselected package libnetfilter-conntrack3:amd64.
+Preparing to unpack .../04-libnetfilter-conntrack3_1.0.9-6build1_amd64.deb ...
+Unpacking libnetfilter-conntrack3:amd64 (1.0.9-6build1) ...
+Selecting previously unselected package libnftnl11:amd64.
+Preparing to unpack .../05-libnftnl11_1.2.6-2build1_amd64.deb ...
+Unpacking libnftnl11:amd64 (1.2.6-2build1) ...
+Selecting previously unselected package iptables.
+Preparing to unpack .../06-iptables_1.8.10-3ubuntu2_amd64.deb ...
+Unpacking iptables (1.8.10-3ubuntu2) ...
+Selecting previously unselected package libnftables1:amd64.
+Preparing to unpack .../07-libnftables1_1.0.9-1build1_amd64.deb ...
+Unpacking libnftables1:amd64 (1.0.9-1build1) ...
+Selecting previously unselected package nftables.
+Preparing to unpack .../08-nftables_1.0.9-1build1_amd64.deb ...
+Unpacking nftables (1.0.9-1build1) ...
+Selecting previously unselected package bridge-utils.
+Preparing to unpack .../09-bridge-utils_1.7.1-1ubuntu2_amd64.deb ...
+Unpacking bridge-utils (1.7.1-1ubuntu2) ...
+Selecting previously unselected package runc.
+Preparing to unpack .../10-runc_1.3.3-0ubuntu1~24.04.3_amd64.deb ...
+Unpacking runc (1.3.3-0ubuntu1~24.04.3) ...
+Selecting previously unselected package containerd.
+Preparing to unpack .../11-containerd_1.7.28-0ubuntu1~24.04.2_amd64.deb ...
+Unpacking containerd (1.7.28-0ubuntu1~24.04.2) ...
+Selecting previously unselected package dns-root-data.
+Preparing to unpack .../12-dns-root-data_2024071801~ubuntu0.24.04.1_all.deb ...
+Unpacking dns-root-data (2024071801~ubuntu0.24.04.1) ...
+Selecting previously unselected package dnsmasq-base.
+Preparing to unpack .../13-dnsmasq-base_2.90-2ubuntu0.1_amd64.deb ...
+Unpacking dnsmasq-base (2.90-2ubuntu0.1) ...
+Selecting previously unselected package docker.io.
+Preparing to unpack .../14-docker.io_28.2.2-0ubuntu1~24.04.1_amd64.deb ...
+Unpacking docker.io (28.2.2-0ubuntu1~24.04.1) ...
+Selecting previously unselected package ubuntu-fan.
+Preparing to unpack .../15-ubuntu-fan_0.12.16+24.04.1_all.deb ...
+Unpacking ubuntu-fan (0.12.16+24.04.1) ...
+Setting up libip4tc2:amd64 (1.8.10-3ubuntu2) ...
+Setting up libip6tc2:amd64 (1.8.10-3ubuntu2) ...
+Setting up libnftnl11:amd64 (1.2.6-2build1) ...
+Setting up runc (1.3.3-0ubuntu1~24.04.3) ...
+Setting up dns-root-data (2024071801~ubuntu0.24.04.1) ...
+Setting up bridge-utils (1.7.1-1ubuntu2) ...
+Setting up pigz (2.8-1) ...
+Setting up libnfnetlink0:amd64 (1.0.2-2build1) ...
+Setting up containerd (1.7.28-0ubuntu1~24.04.2) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /usr/lib/systemd/system/containerd.service.
+Setting up libnftables1:amd64 (1.0.9-1build1) ...
+Setting up nftables (1.0.9-1build1) ...
+Setting up libnetfilter-conntrack3:amd64 (1.0.9-6build1) ...
+Setting up iptables (1.8.10-3ubuntu2) ...
+update-alternatives: using /usr/sbin/iptables-legacy to provide /usr/sbin/iptables (iptables) in auto mode
+update-alternatives: using /usr/sbin/ip6tables-legacy to provide /usr/sbin/ip6tables (ip6tables) in auto mode
+update-alternatives: using /usr/sbin/iptables-nft to provide /usr/sbin/iptables (iptables) in auto mode
+update-alternatives: using /usr/sbin/ip6tables-nft to provide /usr/sbin/ip6tables (ip6tables) in auto mode
+update-alternatives: using /usr/sbin/arptables-nft to provide /usr/sbin/arptables (arptables) in auto mode
+update-alternatives: using /usr/sbin/ebtables-nft to provide /usr/sbin/ebtables (ebtables) in auto mode
+Setting up docker.io (28.2.2-0ubuntu1~24.04.1) ...
+info: Selecting GID from range 100 to 999 ...
+info: Adding group `docker' (GID 108) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /usr/lib/systemd/system/docker.service.
+Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /usr/lib/systemd/system/docker.socket.
+Setting up dnsmasq-base (2.90-2ubuntu0.1) ...
+Setting up ubuntu-fan (0.12.16+24.04.1) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/ubuntu-fan.service → /usr/lib/systemd/system/ubuntu-fan.service.
+Processing triggers for man-db (2.12.0-4build2) ...
+Processing triggers for dbus (1.14.10-4ubuntu4.1) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.3) ...
+koffi@PC25320:~$ sudo systemctl enable docker
+sudo systemctl start docker
+sudo usermod -aG docker $USER
+koffi@PC25320:~$ docker --version
+Docker version 28.2.2, build 28.2.2-0ubuntu1~24.04.1
+koffi@PC25320:~$ echo | openssl s_client -showcerts -servername download.docker.com -connect download.docker.com:443
+CONNECTED(00000003)
+depth=4 CN = KUKA-Int-Root-CA
+verify error:num=19:self-signed certificate in certificate chain
+verify return:1
+depth=4 CN = KUKA-Int-Root-CA
+verify return:1
+depth=3 DC = com, DC = kuka, DC = int, DC = kuka, CN = KUKA-Int-CA1
+verify return:1
+depth=2 C = DE, ST = Bavaria, L = Augsburg, O = KUKA AG, OU = IT, CN = KUKA-Zscaler-v2
+verify return:1
+depth=1 C = DE, L = Augsburg, ST = Bavaria, O = KUKA AG, OU = IT, CN = "KUKA-Zscaler-v2 (t) "
+verify return:1
+depth=0 CN = *.docker.com, O = Zscaler Inc., OU = Zscaler Inc.
+verify return:1
+---
+Certificate chain
+ 0 s:CN = *.docker.com, O = Zscaler Inc., OU = Zscaler Inc.
+   i:C = DE, L = Augsburg, ST = Bavaria, O = KUKA AG, OU = IT, CN = "KUKA-Zscaler-v2 (t) "
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Mar  4 09:29:43 2026 GMT; NotAfter: Mar 17 17:01:15 2026 GMT
+-----BEGIN CERTIFICATE-----
+MIIExjCCA66gAwIBAgIQb/mr13+c+PjhmsYWpfkuqTANBgkqhkiG9w0BAQsFADBw
+MQswCQYDVQQGEwJERTERMA8GA1UEBwwIQXVnc2J1cmcxEDAOBgNVBAgMB0JhdmFy
+aWExEDAOBgNVBAoMB0tVS0EgQUcxCzAJBgNVBAsMAklUMR0wGwYDVQQDDBRLVUtB
+LVpzY2FsZXItdjIgKHQpIDAeFw0yNjAzMDQwOTI5NDNaFw0yNjAzMTcxNzAxMTVa
+MEUxFTATBgNVBAMMDCouZG9ja2VyLmNvbTEVMBMGA1UECgwMWnNjYWxlciBJbmMu
+MRUwEwYDVQQLDAxac2NhbGVyIEluYy4wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+ggEKAoIBAQCZOeeoPZ6etPAwWcp88hopJfragi//PFEZ5CizH37u/O93yNQ9OSCc
+KAN26kOGGPhUa9if9WmImv41e7eyyBiZnsRSIL60UBNnTmeMvVlG56lID090bDPH
+yMbAHZ2JqXnOgXlOwWYSsQzDiyFHAmigVP6MXLyTdadVVJ8r3bWFe6rqJp4Uf92C
+pp+h+XcPy8quqvxSsACT97iGOIwoVQUPLa6/krsBK+V7vRjN+sTPuxkRq2UkJ6x9
+76XnTpdj4rWdfEoMv+nizVwFwo1PvMhBMAoj9LlYGKwn4IXzkzRBdwrY6mQyQ1rf
+kXgrDwkvGQSvXXOi5yYaYO9siQMqT64LAgMBAAGjggGFMIIBgTB7BgNVHREEdDBy
+ggwqLmRvY2tlci5jb22CECouaHViLmRvY2tlci5jb22CCmRvY2tlci5jb22CCWRv
+Y2tlci5pb4ILKi5kb2NrZXIuaW+CEiouY2xvdWQuZG9ja2VyLmNvbYIYKi5jbG91
+ZC1zdGFnZS5kb2NrZXIuY29tMA4GA1UdDwEB/wQEAwIFoDATBgNVHSUEDDAKBggr
+BgEFBQcDATAMBgNVHRMBAf8EAjAAMIGOBgNVHR8EgYYwgYMwP6A9oDuGOWh0dHA6
+Ly9nYXRld2F5LnpzY2FsZXIubmV0L3pzY2FsZXItenNjcmwtNTc0NjE5NTQtOTkz
+LmNybDBAoD6gPIY6aHR0cDovL2dhdGV3YXk2LnpzY2FsZXIubmV0L3pzY2FsZXIt
+enNjcmwtNTc0NjE5NTQtOTkzLmNybDAdBgNVHQ4EFgQUrf3/zaNYGzbRe9hOu1wD
+h4b1IGwwHwYDVR0jBBgwFoAUbxF7vj5tVQolEx7WVPO5FT51Z5gwDQYJKoZIhvcN
+AQELBQADggEBACauYOsOlXtozYH1xuzrlbUXkiPQCGFUzSywu6rctvYiO/mLQ7IY
+kT//IuqfHe4zp+rGLBwgunvW6nw9CrmAkKiRFxNkJYQ1bgw46h4IU4LAmntwDAps
+zWASNWpFHonPSM4P9iiP38wqmBouBkI1Bipme/pPguq6HlFhHibezwko6MmUV27y
+OrztYq9V7e5C/anT/uk2BLw1npjQ+tO74PnXDu1YrqRJ2QHdedzWFuFLhLAVBq1U
+J/t5oIXgChD/25eHZHD1l/wVS/mmqP3uJhy+kR9G+5yvOaiVis0mobPev2pCWUby
+v8LDzlfRbOsdwLR1XUaeQJxw96JfD7iX0yA=
+-----END CERTIFICATE-----
+ 1 s:C = DE, L = Augsburg, ST = Bavaria, O = KUKA AG, OU = IT, CN = "KUKA-Zscaler-v2 (t) "
+   i:C = DE, ST = Bavaria, L = Augsburg, O = KUKA AG, OU = IT, CN = KUKA-Zscaler-v2
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Mar  3 17:01:15 2026 GMT; NotAfter: Mar 17 17:01:15 2026 GMT
+-----BEGIN CERTIFICATE-----
+MIIECDCCAvCgAwIBAgIEaacT2zANBgkqhkiG9w0BAQsFADBrMQswCQYDVQQGEwJE
+RTEQMA4GA1UECBMHQmF2YXJpYTERMA8GA1UEBxMIQXVnc2J1cmcxEDAOBgNVBAoT
+B0tVS0EgQUcxCzAJBgNVBAsTAklUMRgwFgYDVQQDEw9LVUtBLVpzY2FsZXItdjIw
+HhcNMjYwMzAzMTcwMTE1WhcNMjYwMzE3MTcwMTE1WjBwMQswCQYDVQQGEwJERTER
+MA8GA1UEBwwIQXVnc2J1cmcxEDAOBgNVBAgMB0JhdmFyaWExEDAOBgNVBAoMB0tV
+S0EgQUcxCzAJBgNVBAsMAklUMR0wGwYDVQQDDBRLVUtBLVpzY2FsZXItdjIgKHQp
+IDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMlQssrwbcKXgGPHyJtC
+ATaTh4A5BM58aVWBAzOaOwwh8DaJWxZBnLb70kNXGNCj3vd2LLX8zukw3FaPJ3Uz
+s3+cM1TYZxhW7gqT1iNdknNM3aICseD5504iHKbbRWYG2i/m41Wklovp5g3Dqdd5
+dvSA707wq/oNc+9oqoaeo2Ms8gumEkgzsYIyyRiObuvu7Ib+raLzGL/FzKPcT/yW
+ytwvAOi9wkxXQGB0ypcGvfLfcqDGoF1f9YSNX1NIYGwS47Z4QMSgP0/xg/Zwqoda
+rDD7wyM4RkLUhLNJNcygCuJVACGXrFIgZH70PCzNro7uoxzTGrZag1bDP38KhCwN
+ZIMCAwEAAaOBrjCBqzAdBgNVHQ4EFgQUbxF7vj5tVQolEx7WVPO5FT51Z5gwHwYD
+VR0jBBgwFoAU9vsRBLIbEyLPJuopsgOLION/MnkwDwYDVR0TAQH/BAUwAwEB/zAO
+BgNVHQ8BAf8EBAMCAf4wSAYDVR0fBEEwPzA9oDugOYY3aHR0cDovL2dhdGV3YXku
+enNjYWxlci5uZXQvY3JsL3pzbi1rZWstNTc0NjE5NTQtOTkzLmNybDANBgkqhkiG
+9w0BAQsFAAOCAQEAhVWx2fmpywqkR4nWhr7fxqnckm96z2SORFbAMXVyz0w+bay0
+Rqn/8Q4w6EhfawpQtp7hAhBvBDIDtsisIZq5zewXDz+2aY+uLSk9wZNKOHDVJFRK
+zxUuma2XOelSfo7+wqCPiEOoTfC3XGhKUwC6V/stt50Lsv/1aebC1JAONSIC+i7H
+ZCteWeT9P7cU/RuKUqUxq/KzPnpjXFreQUCBqzoYhQjRa0KJX/bVPpljcWJqe3qF
+fticCwtoeSUA5iI9qM1oFJB8x5Y3lc+Zc58cAR/JjQ7UAaLnSy97njVI/o3nwwSm
+Ne6LhSOOFFwbZ8rENQ2Jbl8wDkcH8dpZYRI+fg==
+-----END CERTIFICATE-----
+ 2 s:C = DE, ST = Bavaria, L = Augsburg, O = KUKA AG, OU = IT, CN = KUKA-Zscaler-v2
+   i:DC = com, DC = kuka, DC = int, DC = kuka, CN = KUKA-Int-CA1
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Jan 28 15:48:38 2025 GMT; NotAfter: Jan 27 15:48:38 2030 GMT
+-----BEGIN CERTIFICATE-----
+MIIGVDCCBTygAwIBAgITXgAEKamz2U74a6iRowABAAQpqTANBgkqhkiG9w0BAQsF
+ADBtMRMwEQYKCZImiZPyLGQBGRYDY29tMRQwEgYKCZImiZPyLGQBGRYEa3VrYTET
+MBEGCgmSJomT8ixkARkWA2ludDEUMBIGCgmSJomT8ixkARkWBGt1a2ExFTATBgNV
+BAMTDEtVS0EtSW50LUNBMTAeFw0yNTAxMjgxNTQ4MzhaFw0zMDAxMjcxNTQ4Mzha
+MGsxCzAJBgNVBAYTAkRFMRAwDgYDVQQIEwdCYXZhcmlhMREwDwYDVQQHEwhBdWdz
+YnVyZzEQMA4GA1UEChMHS1VLQSBBRzELMAkGA1UECxMCSVQxGDAWBgNVBAMTD0tV
+S0EtWnNjYWxlci12MjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOOG
+Pl6xwIHM8Ac6+ut4yfiLDZXLV4l/r5dujx35mVF9gG17wGUhWJ+/36Hiae9ZE93m
+15qPPEcCmivO4kyrALrKv/36ZNgsFRX8JD+JZhfLBXrAX/4LxyXmuW1UO8y0Coyd
+B1/u+rBGJxWESFUfhnWkByZkHMHyD5uDht3a+qf0UK5bPfS6vZGIv503oCezof38
+wb4NJzmJAkJOP+ej7ot/TC/1yuLV7keJTGmnAI4CVDQLH678A7cHoONwj8mljE+C
+aZ5fLTiVXThGs/36Y2LhSTQDDS1IKrPY5rCS6lV/sjRl5JWKt1nB2axIKqA5MqXI
++FbhYDIzf0jnN1ntq1UCAwEAAaOCAu0wggLpMA8GA1UdEwEB/wQFMAMBAf8wDgYD
+VR0PAQH/BAQDAgGGMB0GA1UdDgQWBBT2+xEEshsTIs8m6imyA4sg438yeTAfBgNV
+HSMEGDAWgBTAFjTbQBXTYky82Fsk9ur+iGNbmzCCARIGA1UdHwSCAQkwggEFMIIB
+AaCB/qCB+4Y2aHR0cDovL3BraS5pbnQua3VrYS5jb20vY2VydGVucm9sbC9LVUtB
+LUludC1DQTEoMSkuY3JshoHAbGRhcDovLy9DTj1LVUtBLUludC1DQTEoMSksQ049
+REVBVTFTVlBLSUkwMSxDTj1DRFAsQ049UHVibGljJTIwS2V5JTIwU2VydmljZXMs
+Q049U2VydmljZXMsQ049Q29uZmlndXJhdGlvbixEQz1pbnQsREM9a3VrYSxEQz1j
+b20/Y2VydGlmaWNhdGVSZXZvY2F0aW9uTGlzdD9iYXNlP29iamVjdENsYXNzPWNS
+TERpc3RyaWJ1dGlvblBvaW50MIIBUwYIKwYBBQUHAQEEggFFMIIBQTBiBggrBgEF
+BQcwAoZWaHR0cDovL3BraS5pbnQua3VrYS5jb20vY2VydGVucm9sbC9ERUFVMVNW
+UEtJSTAxLmt1a2EuaW50Lmt1a2EuY29tX0tVS0EtSW50LUNBMSgxKS5jcnQwga8G
+CCsGAQUFBzAChoGibGRhcDovLy9DTj1LVUtBLUludC1DQTEsQ049QUlBLENOPVB1
+YmxpYyUyMEtleSUyMFNlcnZpY2VzLENOPVNlcnZpY2VzLENOPUNvbmZpZ3VyYXRp
+b24sREM9aW50LERDPWt1a2EsREM9Y29tP2NBQ2VydGlmaWNhdGU/YmFzZT9vYmpl
+Y3RDbGFzcz1jZXJ0aWZpY2F0aW9uQXV0aG9yaXR5MCkGCCsGAQUFBzABhh1odHRw
+Oi8vb2NzcC5pbnQua3VrYS5jb20vb2NzcDAZBgkrBgEEAYI3FAIEDB4KAFMAdQBi
+AEMAQTANBgkqhkiG9w0BAQsFAAOCAQEAbdnGcaZE5RyVxcRukqIxJIRMdmFNojcg
+vtsRgmOuDv4ucu5Qgw4BRl4B1cHknSnDd5eR1QOljfqeksLmpXbeHhRWQ1Uk6N6A
+hL3/9hVBk4RM+E32lr6yUe3rm6E4GYRLgEDUDFZrRmthTktIeebEDnrnky9RKT8n
+vlNTnf4tb++O5LXHV3rOqWmhp0uB0ue98bE22dN+qfoavCx4iSeg+LxQM+eB+Ndy
+DMwHHhVRSSrMY+0fRQLwYYqBA4GL4+xuly71abhj7axi/7GBRTyQsw892WtV1IYe
+B+5DhXt9mZmv+v3CboJf/e6jNi8Z/iTFlSrgXURoAAMcE9JAphB5OA==
+-----END CERTIFICATE-----
+ 3 s:CN = KUKA-Int-Root-CA
+   i:CN = KUKA-Int-Root-CA
+   a:PKEY: rsaEncryption, 4096 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Mar  2 07:46:55 2024 GMT; NotAfter: Mar  3 07:56:46 2034 GMT
+-----BEGIN CERTIFICATE-----
+MIIFODCCAyCgAwIBAgIQH9qv50TBh71JdKK01UL9RjANBgkqhkiG9w0BAQsFADAb
+MRkwFwYDVQQDExBLVUtBLUludC1Sb290LUNBMB4XDTI0MDMwMjA3NDY1NVoXDTM0
+MDMwMzA3NTY0NlowGzEZMBcGA1UEAxMQS1VLQS1JbnQtUm9vdC1DQTCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBAMJAGcdK93QCC7E44W+MsQeLY61RmW/9
+leGG/eTK/04PWiBYW03Z08TAUTpw/4y+5ZuKFLl0UdYd24erY/X9sQPraLMJiO56
+aRUJwON7olFRNCu/3sS11MEachkUy9TQ7csRhezouHeSEgIRVdG/Y/4F/DqiLuJh
+Xqok9pWJdb37Hn+cCkcsowBvDGdCvVPSWdqTNfmCn61DmgAyJ/RomZ1rPNzAxO2f
+WKMphzPuw6dnfFsT9JUaTCN5AVMmfWOaAdYgHuuRnWSJ1tuEjyiWrWbD4BGlsHCi
+Gq17/NWlhRwiWNfH0kxxUKL8c2+IDv8p3DhAUJBx63JdoCi7zgsNmfNqF8f8aSFA
+ZKWybguZYmrs+KE4y2aEMk00NVbYeQzQAWuWlz4lXPyB2xJEaExjegHJE9WaKzl/
+8n5WMGs0IIvKQrlmS1VFjMkFDOwJ5sVo1zb63rxj9fJ4zBJUH1E0yjFtoOyepqt+
+VYzUZrF1IXt58fBZTLJe18HCPXCM1qmuv7o431a2Cg4uPt10QdGF3WIOZ3amLo2t
+HlRuJ9SSZ3k6EXXQ8NdYvyWH5OelEfVhuPRq9TihroXoewvEop8tY7v2XKuUuDPn
+we29VVm1NGIDGYoLhdZ2sdY/DGZlLALSJDL4gZzTZZOWaMmNrJjCi+hLCCTcR0ir
+Hb4tpJv/tFYVAgMBAAGjeDB2MAsGA1UdDwQEAwIBhjAPBgNVHRMBAf8EBTADAQH/
+MB0GA1UdDgQWBBTtG2QpbhoG3DziR4s3zcVNg5tuJDASBgkrBgEEAYI3FQEEBQID
+AQABMCMGCSsGAQQBgjcVAgQWBBQ7j/k2S5BD+zLEzNLFW7rVvvXmeDANBgkqhkiG
+9w0BAQsFAAOCAgEAJdiGO6ljGvRWc0ffyxRGSdFsMB3u0AqsoTPa7dYwQCBhBSaN
+JIjdVbODnSqbhmEQVB/FgF9Bp7zyNA/+/B3bGYx/EHkAHWvgJflWG8pLrlAp8muB
+aqZTQfNpAnmZe/9FPnhL8TujNw14ZZ34Ko6eT4qP1FWRHuQKg6wPDRm3DKCyLdCz
+K4XD2NQNvi2b7EFRy53/Q0fTNjPCsdD1KQMhbTvs6DvejByWh1ilBAvQLnV0vD7d
+vRKNTK8PFFx0MoS3HWxHA6k/JuYqHLxrJM+27TawjDX4Dv3uZVN9jYx5J79jwDuL
+uexN0hYmzfJlzy5/vDt+vy3ZTctPPOJ76qjZ9aHB4EU7dNWkBMCZrquFlmyzd+TX
+Lt5t2EIqpqaTJOUznvHSAKW9yD1cGJ89QbEwhn65zDfqO0VmN8/dgIjevpbn1KPQ
+iuCF7mkT4CbMhI8jwt+RhOV39O1tgDan2wAXZ0NJq7nmwQvMkj6S8iftqqj8/qoC
+tlhvXNOgCB9qEe55n0ERj4eHOl8rkgZnW0JF7aFKKsH9wknE40nPEk7p9Sfne1HF
+4ZL5kcctoPfcksgml1+H8oKuuIsoLu3DgoH9RtZIYXkkodhx8O2/7hQkiPrHF2lH
+Xggm6wa38dBXSKvr0kqCaKHQCyCj6cwVMxqYCwGjUHKvPrCh1vrYgmZVX60=
+-----END CERTIFICATE-----
+ 4 s:DC = com, DC = kuka, DC = int, DC = kuka, CN = KUKA-Int-CA1
+   i:CN = KUKA-Int-Root-CA
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Mar  2 09:02:03 2024 GMT; NotAfter: Mar  2 09:12:03 2034 GMT
+-----BEGIN CERTIFICATE-----
+MIIHGDCCBQCgAwIBAgITGQAAAAgj0OyPZgHgvAABAAAACDANBgkqhkiG9w0BAQsF
+ADAbMRkwFwYDVQQDExBLVUtBLUludC1Sb290LUNBMB4XDTI0MDMwMjA5MDIwM1oX
+DTM0MDMwMjA5MTIwM1owbTETMBEGCgmSJomT8ixkARkWA2NvbTEUMBIGCgmSJomT
+8ixkARkWBGt1a2ExEzARBgoJkiaJk/IsZAEZFgNpbnQxFDASBgoJkiaJk/IsZAEZ
+FgRrdWthMRUwEwYDVQQDEwxLVUtBLUludC1DQTEwggEiMA0GCSqGSIb3DQEBAQUA
+A4IBDwAwggEKAoIBAQDdmbttGPaQkWL/3dUGj0Ai2ylsaKrQ8epzzjR+bTxwOxgS
+3huBDE16LxwFeEAokzrftsSXBfR6J0kCo4FBTJWGlkANNfFRExGVI0JpvytpDm+t
+RG6g28eljjhtwuHyuOtDHxIaTLgVUO/gVh5ze7dpPUgFWdhizmGeYCm3FyO/CCvs
+Rb+9WHwdI0n2Fd54gWmCdrV/sTGrfOs7KuCXEUpfKnvF/t9unVwV02gpoegyL7lp
+zypAYGVDRk/ZAU0UoawIvAAk44PUBnZPOU4sNw+pa9nw8F674LhU0CWCkAsGjZwg
+BPNaelW3D0A24QBbeAqMYq96O1aK8d+ZTUZbrt9VAgMBAAGjggMBMIIC/TASBgkr
+BgEEAYI3FQEEBQIDAQABMCMGCSsGAQQBgjcVAgQWBBQ4okInw08/9Qu9H/8QA6jO
+JostejAdBgNVHQ4EFgQUwBY020AV02JMvNhbJPbq/ohjW5swGQYJKwYBBAGCNxQC
+BAweCgBTAHUAYgBDAEEwCwYDVR0PBAQDAgGGMA8GA1UdEwEB/wQFMAMBAf8wHwYD
+VR0jBBgwFoAU7RtkKW4aBtw84keLN83FTYObbiQwggEaBgNVHR8EggERMIIBDTCC
+AQmgggEFoIIBAYY6aHR0cDovL3BraS5pbnQua3VrYS5jb20vY2VydGVucm9sbC9L
+VUtBLUludC1Sb290LUNBKDEpLmNybIaBwmxkYXA6Ly8vQ049S1VLQS1JbnQtUm9v
+dC1DQSgxKSxDTj1ERUFVMVNWUEtJUixDTj1DRFAsQ049UHVibGljJTIwS2V5JTIw
+U2VydmljZXMsQ049U2VydmljZXMsQ049Q29uZmlndXJhdGlvbixEQz1pbnQsREM9
+a3VrYSxEQz1jb20/Y2VydGlmaWNhdGVSZXZvY2F0aW9uTGlzdD9iYXNlP29iamVj
+dENsYXNzPWNSTERpc3RyaWJ1dGlvblBvaW50MIIBKQYIKwYBBQUHAQEEggEbMIIB
+FzBfBggrBgEFBQcwAoZTaHR0cDovL3BraS5pbnQua3VrYS5jb20vY2VydGVucm9s
+bC9ERUFVMVNWUEtJUi5pbnQua3VrYS5jb21fS1VLQS1JbnQtUm9vdC1DQSgxKS5j
+cnQwgbMGCCsGAQUFBzAChoGmbGRhcDovLy9DTj1LVUtBLUludC1Sb290LUNBLENO
+PUFJQSxDTj1QdWJsaWMlMjBLZXklMjBTZXJ2aWNlcyxDTj1TZXJ2aWNlcyxDTj1D
+b25maWd1cmF0aW9uLERDPWludCxEQz1rdWthLERDPWNvbT9jQUNlcnRpZmljYXRl
+P2Jhc2U/b2JqZWN0Q2xhc3M9Y2VydGlmaWNhdGlvbkF1dGhvcml0eTANBgkqhkiG
+9w0BAQsFAAOCAgEAVi+U8GtGGdqrWOVoIPdivj8sUdXJTv8qbO9EkviWsXGC1Tym
+MeiBbL7AQsZcZEJhpqoPxm0s/z70ucEOl33ttSzNhyjUQ+0akYqNrgG4Yi5k0ckm
+7quc89cXUksN5oOiJohF2lbioIjcDWrCTSb+uLoHyWQunIFIgFzOPDHUQVaVAdY2
+I+yi37VIV1A1PNSfU1Fs44vs2F2yLOH6wux0gFkzqAK2mis0iYd1L8P2TN/iXmeP
+fBQFK3Fp6OYhd97pDb8pzhgoOSoU1TyUKJiqYy24ygRCbyc8qwJeq+tFTRXjEpjI
+kLpBKrEcc2sENuc1n01t0FsqCsUuzLGE93OffiKZJ8K6NPkt4rzJsPQBEI7UVzN1
+jJajA/D68h5Ww06cqEoq81Ki2WeXlM8HJIryAiyc960fRWtHVRAZmDplYtv6OEWA
+xWNy/qEW70bzyY+b2iYZpsHktGOXSJ51m0XTtsJUkNrNMPQAP47pebz8K7688OpT
+SvfYqV2lWXPcxPB7GLLSJRSBRE+6Q+cCSRvsrB/AXkkl1hYIpURLS+dql2+dB64A
+rSRa1visn2D9k+7gJqKRQyA0dO2zl+mnLjhRS+4zp5LvIZhChEY6SVmqvvqrpo4D
+skpKD8u4eRURN/LPJFT+3ZPjb3T1Mp04GCO4UNaReI85yLCpcVycMg0Ch7w=
+-----END CERTIFICATE-----
+---
+Server certificate
+subject=CN = *.docker.com, O = Zscaler Inc., OU = Zscaler Inc.
+issuer=C = DE, L = Augsburg, ST = Bavaria, O = KUKA AG, OU = IT, CN = "KUKA-Zscaler-v2 (t) "
+---
+No client certificate CA names sent
+Peer signing digest: SHA256
+Peer signature type: RSA-PSS
+Server Temp Key: ECDH, prime256v1, 256 bits
+---
+SSL handshake has read 7748 bytes and written 755 bytes
+Verification error: self-signed certificate in certificate chain
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+Server public key is 2048 bit
+Secure Renegotiation IS NOT supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 19 (self-signed certificate in certificate chain)
+---
+DONE
+koffi@PC25320:~$ Koffitse — **pas de panique**, ton erreur est *normale* dans un environnement d’entreprise qui utilise un **proxy TLS intercepté** (certificat auto‑signé dans la chaîne).
+
+```
