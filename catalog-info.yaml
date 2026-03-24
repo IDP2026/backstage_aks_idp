@@ -2,11 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: kuka-platform
-  description: An example of a Backstage application.
-  # Example for optional annotations
-  # annotations:
-  #   github.com/project-slug: backstage/backstage
-  #   backstage.io/techdocs-ref: dir:.
+  description: Backstage platform component
+  annotations:
+    backstage.io/kubernetes-id: kuka-platform
+    backstage.io/kubernetes-namespace: idpapp
 spec:
   type: website
   owner: john@example.com

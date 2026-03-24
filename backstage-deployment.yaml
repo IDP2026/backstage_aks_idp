@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backstage
+  namespace: idpapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backstage
+  template:
+    metadata:
+      labels:
+        app: backstage
+    spec:
+      containers:
+        - name: backstage
+          image: abk18999/backstage-kuka:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 7007
+          env:
+            - name: NODE_ENV
+              value: production

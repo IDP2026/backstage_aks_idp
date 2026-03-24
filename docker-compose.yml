@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: pg-backstage
+    restart: always
+    environment:
+      POSTGRES_DB: backstage
+      POSTGRES_USER: backstage
+      POSTGRES_PASSWORD: backstage
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backstage:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backstage-app
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: production
+
+      # Base URLs wichtig!
+      APP_CONFIG_app_baseUrl: "http://localhost:3000"
+      APP_CONFIG_backend_baseUrl: "http://localhost:7007"
+
+      # DB Verbindung
+      APP_CONFIG_backend_database_client: pg
+      APP_CONFIG_backend_database_connection_host: postgres
+      APP_CONFIG_backend_database_connection_port: 5432
+      APP_CONFIG_backend_database_connection_user: backstage
+      APP_CONFIG_backend_database_connection_password: backstage
+      APP_CONFIG_backend_database_connection_database: backstage
+
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+
+    ports:
+      - "3000:3000"
+      - "7007:7007"
+    restart: unless-stopped
+
+volumes:
+  pgdata:

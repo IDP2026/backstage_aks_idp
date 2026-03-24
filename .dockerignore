@@ -6,3 +6,16 @@ packages/*/src
 packages/*/node_modules
 plugins
 *.local.yaml
+
+# --- allow workspace manifests for Docker build ---
+!package.json
+!yarn.lock
+!.yarnrc.yml
+!.yarn/**
+!packages/**/package.json
+!packages/**/package.json.*
+!plugins/**/package.json
+!plugins/**/package.json.*
+!app-config.yaml
+!app-config.production.yaml
+!certs/**
