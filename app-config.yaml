@@ -3,19 +3,17 @@
 # -------------------------------------------------------------------
 app:
   title: Scaffolded Backstage App
-  # Le frontend doit OBLIGATOIREMENT utiliser un port DIFFERENT du backend.
   baseUrl: http://localhost:3000
 
 organization:
   name: My Company
 
 # -------------------------------------------------------------------
-# BACKEND CONFIG – ADAPTÉ POUR POSTGRESQL
+# BACKEND CONFIG – POSTGRESQL
 # -------------------------------------------------------------------
 backend:
   baseUrl: http://localhost:7007
 
-  # Le backend écoute sur le port 7007 (par défaut Backstage)
   listen:
     host: 0.0.0.0
     port: 7007
@@ -24,25 +22,21 @@ backend:
     connect-src: ["'self'", 'http:', 'https:']
 
   cors:
-    # Le frontend (port 3000) a le droit d'appeler le backend (7007)
     origin: http://localhost:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
 
-  # -----------------------------------------------------------------
-  # CONFIGURATION BDD – POSTGRESQL (STABLE, RECOMMANDÉ)
-  # -----------------------------------------------------------------
   database:
     client: pg
     connection:
-      host: postgres        # Poste local → Docker expose 5432
+      host: postgres
       port: 5432
-      user: backstage        # Créé dans ton conteneur postgres
-      password: backstage    # Mot de passe annoncé
-      database: backstage    # Nom de la base
+      user: backstage
+      password: backstage
+      database: backstage
 
-  # -------------------------------------------------------------------
-# INTÉGRATION GITHUB
+# -------------------------------------------------------------------
+# INTEGRATIONS GITHUB  ✅ MUST BE TOP-LEVEL
 # -------------------------------------------------------------------
 integrations:
   github:
@@ -50,12 +44,19 @@ integrations:
       token: ${GITHUB_TOKEN}
 
 # -------------------------------------------------------------------
-# PROXY (désactivé ici)
+# AUTH – GUEST MODE
+# -------------------------------------------------------------------
+auth:
+  providers:
+    guest: {}
+
+# -------------------------------------------------------------------
+# PROXY
 # -------------------------------------------------------------------
 proxy: {}
 
 # -------------------------------------------------------------------
-# TECHDOCS – MODE LOCAL (OK POUR DEV)
+# TECHDOCS
 # -------------------------------------------------------------------
 techdocs:
   builder: local
@@ -65,19 +66,12 @@ techdocs:
     type: local
 
 # -------------------------------------------------------------------
-# AUTH – MODE INVITE PAR DÉFAUT
-# -------------------------------------------------------------------
-auth:
-  providers:
-    guest: {}
-
-# -------------------------------------------------------------------
-# SCAFFOLDER – PAR DÉFAUT
+# SCAFFOLDER
 # -------------------------------------------------------------------
 scaffolder: {}
 
 # -------------------------------------------------------------------
-# CATALOG – ENTITÉS LOCALES D’EXEMPLES
+# CATALOG
 # -------------------------------------------------------------------
 catalog:
   import:
@@ -90,12 +84,10 @@ catalog:
   locations:
     - type: file
       target: ../../examples/entities.yaml
-
     - type: file
       target: ../../examples/template/template.yaml
       rules:
         - allow: [Template]
-
     - type: file
       target: ../../examples/org.yaml
       rules:
@@ -108,7 +100,7 @@ permission:
   enabled: true
 
 # -------------------------------------------------------------------
-# KUBERNETES – TON CLUSTER AKS
+# KUBERNETES
 # -------------------------------------------------------------------
 kubernetes:
   serviceLocatorMethod:

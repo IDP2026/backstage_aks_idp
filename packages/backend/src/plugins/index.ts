@@ -1,0 +1,9 @@
+export { default as appPlugin } from '@backstage/plugin-app-backend';
+export { default as proxyPlugin } from '@backstage/plugin-proxy-backend';
+export { default as catalogPlugin } from '@backstage/plugin-catalog-backend';
+export { default as techdocsPlugin } from '@backstage/plugin-techdocs-backend';
+export { default as authPlugin } from '@backstage/plugin-auth-backend';
+export { default as permissionsPlugin } from '@backstage/plugin-permission-backend';
+export { default as scaffolderPlugin } from '@backstage/plugin-scaffolder-backend';
+export { default as searchPlugin } from '@backstage/plugin-search-backend';
+export { default as kubernetesPlugin } from '@backstage/plugin-kubernetes-backend';
