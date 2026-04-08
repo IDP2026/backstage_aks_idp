@@ -1,0 +1,33 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: golden-path-minimal
+  title: Golden Path – Minimal
+  description: Minimal Git-based template to verify scaffolder loading from Git
+spec:
+  owner: group:platform-team
+  type: service
+
+  parameters:
+    - title: Basic Information
+      required:
+        - serviceName
+      properties:
+        serviceName:
+          title: Service Name
+          type: string
+          description: Name of the service to create
+
+  steps:
+    - id: log
+      name: Log input
+      action: debug:log
+      input:
+        message: "Creating service: ${{ parameters.serviceName }}"
+
+  output:
+    text:
+      - title: Result
+        content: |
+          ✅ Golden Path template executed successfully.
+          Service: ${{ parameters.serviceName }}
