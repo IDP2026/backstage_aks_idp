@@ -1,0 +1,7 @@
+site_name: Golden Path Python Service
+
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core

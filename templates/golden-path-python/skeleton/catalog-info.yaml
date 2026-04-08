@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: golden-path-python
+  description: Python service generated via the Internal Developer Portal Golden Path
+  annotations:
+    backstage.io/kubernetes-id: golden-path-python
+    backstage.io/kubernetes-namespace: idpapp
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:developers
+  system: internal-platform

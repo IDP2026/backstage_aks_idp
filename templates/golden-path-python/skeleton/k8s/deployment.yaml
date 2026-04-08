@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golden-path-python
+  namespace: idpapp
+  labels:
+    app: golden-path-python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: golden-path-python
+  template:
+    metadata:
+      labels:
+        app: golden-path-python
+    spec:
+      containers:
+        - name: app
+          image: my-registry/golden-path-python:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
