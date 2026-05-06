@@ -1,0 +1,8 @@
+site_name: ${{ values.pipelineName }}
+site_description: Dokumentation für Pipeline ${{ values.pipelineName }}
+
+nav:
+  - Überblick: index.md
+
+plugins:
+  - techdocs-core

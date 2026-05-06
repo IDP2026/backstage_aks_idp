@@ -1,115 +1,58 @@
-# -------------------------------------------------------------------
-# CONFIGURATION DE BASE DE TON APPLICATION BACKSTAGE
-# -------------------------------------------------------------------
 app:
-  title: Scaffolded Backstage App
+  title: Backstage
   baseUrl: http://localhost:3000
-
-organization:
-  name: My Company
-
-# -------------------------------------------------------------------
-# BACKEND CONFIG – POSTGRESQL
-# -------------------------------------------------------------------
 backend:
   baseUrl: http://localhost:7007
-
   listen:
     host: 0.0.0.0
     port: 7007
-
-  csp:
-    connect-src: ["'self'", 'http:', 'https:']
-
-  cors:
-    origin: http://localhost:3000
-    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
-    credentials: true
-
-  database:
-    client: pg
-    connection:
-      host: postgres
-      port: 5432
-      user: backstage
-      password: backstage
-      database: backstage
-
-# -------------------------------------------------------------------
-# INTEGRATIONS GITHUB  ✅ MUST BE TOP-LEVEL
-# -------------------------------------------------------------------
-integrations:
-  github:
-    - host: github.com
-      token: ${GITHUB_TOKEN}
-
-# -------------------------------------------------------------------
-# AUTH – GUEST MODE
-# -------------------------------------------------------------------
 auth:
+  environment: development
   providers:
     guest: {}
-
-# -------------------------------------------------------------------
-# PROXY
-# -------------------------------------------------------------------
-proxy: {}
-
-# -------------------------------------------------------------------
-# TECHDOCS
-# -------------------------------------------------------------------
-techdocs:
-  builder: local
-  generator:
-    runIn: docker
-  publisher:
-    type: local
-
-# -------------------------------------------------------------------
-# SCAFFOLDER
-# -------------------------------------------------------------------
-scaffolder: {}
-
-# -------------------------------------------------------------------
-# CATALOG
-# -------------------------------------------------------------------
+permission:
+  enabled: false
 catalog:
-  import:
-    entityFilename: catalog-info.yaml
-    pullRequestBranchName: backstage-integration
-
   rules:
-    - allow: [Component, System, API, Resource, Location]
-
+    - allow:
+        - Component
+        - System
+        - API
+        - Resource
+        - Location
+        - User
+        - Group
+        - Template
   locations:
     - type: file
-      target: ../../examples/entities.yaml
+      target: /home/koffi/backstage_aks_idp/catalog-info.yaml
     - type: file
-      target: ../../examples/template/template.yaml
-      rules:
-        - allow: [Template]
+      target: /home/koffi/backstage_aks_idp/catalog/components/manufacturing-api.yaml
     - type: file
-      target: ../../examples/org.yaml
+      target: /home/koffi/backstage_aks_idp/catalog/systems/manufacturing-platform.yaml
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/resources/azdo-manufacturing-dev.yaml
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/org/platform-team.yaml
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/org/koffi.yaml
+    - type: file
+      target: /home/koffi/backstage_aks_idp/packages/app/templates/azure-devops-service-template/template.yaml
       rules:
-        - allow: [User, Group]
-
-# -------------------------------------------------------------------
-# PERMISSIONS
-# -------------------------------------------------------------------
-permission:
-  enabled: true
-
-# -------------------------------------------------------------------
-# KUBERNETES
-# -------------------------------------------------------------------
-kubernetes:
-  serviceLocatorMethod:
-    type: multiTenant
-  clusterLocatorMethods:
-    - type: config
-      clusters:
-        - name: aks-k8srnddevops-dev-eu1-001
-          url: https://aks-k8srnddevops-dev-eu1-001.privatelink.westeurope.azmk8s.io:443
-          authProvider: azure
-          skipTLSVerify: true
-          skipMetricsLookup: true
+        - allow:
+            - Template
+    - type: file
+      target: /home/koffi/backstage_aks_idp/packages/app/templates/ado-repository-template/template.yaml
+      rules:
+        - allow:
+            - Template
+    - type: file
+      target: /home/koffi/backstage_aks_idp/packages/app/templates/ado-pipeline-bootstrap-template/template.yaml
+      rules:
+        - allow:
+            - Template
+    - type: file
+      target: /home/koffi/backstage_aks_idp/packages/app/templates/ado-permission-request-template/template.yaml
+      rules:
+        - allow:
+            - Template
