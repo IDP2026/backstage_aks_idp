@@ -1,0 +1,27 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  repositoryName: ${{ values.repositoryName }}
+  pipelineName: ${{ values.pipelineName }}
+  owner: ${{ values.owner }}
+  system: ${{ values.system }}
+
+stages:
+  - stage: Validate
+    displayName: Repository validieren
+    jobs:
+      - job: ValidateRepository
+        displayName: Repository-Metadaten prüfen
+        steps:
+          - script: |
+              echo "Repository: $(repositoryName)"
+              echo "Pipeline: $(pipelineName)"
+              echo "Owner: $(owner)"
+              echo "System: $(system)"
+            displayName: Metadaten anzeigen

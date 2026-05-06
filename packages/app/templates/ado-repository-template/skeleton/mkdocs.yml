@@ -1,0 +1,8 @@
+site_name: ${{ values.repositoryTitle }}
+site_description: Dokumentation für ${{ values.repositoryName }}
+
+nav:
+  - Überblick: index.md
+
+plugins:
+  - techdocs-core

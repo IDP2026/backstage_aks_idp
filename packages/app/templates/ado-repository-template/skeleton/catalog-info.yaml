@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.repositoryName }}
+  title: ${{ values.repositoryTitle }}
+  description: >
+    ${{ values.description }}
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - azure-devops
+    - repository
+    - generated
+spec:
+  type: service
+  lifecycle: ${{ values.lifecycle }}
+  owner: ${{ values.owner }}
+  system: ${{ values.system }}
+  dependsOn:
+    - resource:default/${{ values.azureDevOpsProject }}

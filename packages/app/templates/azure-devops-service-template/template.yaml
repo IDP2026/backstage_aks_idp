@@ -1,0 +1,154 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: azure-devops-service-template
+  title: Azure DevOps Service Template
+  description: >
+    Vorlage zur standardisierten Erstellung einer Backstage Component,
+    die einem bestehenden System, Owner und Azure-DevOps-Projekt zugeordnet ist.
+  tags:
+    - azure-devops
+    - service
+    - golden-path
+spec:
+  owner: group:default/platform-team
+  type: service
+
+  parameters:
+    - title: Service-Informationen
+      required:
+        - componentName
+        - componentTitle
+        - description
+      properties:
+        componentName:
+          title: Technischer Servicename
+          type: string
+          description: Kleingeschriebener technischer Name des Services, z.B. manufacturing-api.
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        componentTitle:
+          title: Anzeigename des Services
+          type: string
+          description: Lesbarer Name des Services, z.B. Manufacturing API.
+        description:
+          title: Beschreibung
+          type: string
+          description: Kurze fachliche oder technische Beschreibung des Services.
+
+    - title: Governance-Zuordnung
+      required:
+        - owner
+        - system
+        - azureDevOpsProject
+        - lifecycle
+      properties:
+        owner:
+          title: Verantwortliches Team
+          type: string
+          description: Backstage Owner-Referenz des verantwortlichen Teams.
+          default: group:default/platform-team
+        system:
+          title: Zugehöriges System
+          type: string
+          description: Backstage System, dem der Service zugeordnet wird.
+          default: manufacturing-platform
+        azureDevOpsProject:
+          title: Azure-DevOps-Resource im Catalog
+          type: string
+          description: Backstage Resource, die das Azure-DevOps-Projekt repräsentiert.
+          default: azdo-manufacturing-dev
+        lifecycle:
+          title: Lebenszyklus
+          type: string
+          description: Lebenszyklus der Komponente.
+          default: experimental
+          enum:
+            - experimental
+            - production
+            - deprecated
+
+    - title: Azure-DevOps-Metadaten
+      required:
+        - azureDevOpsOrganization
+        - azureDevOpsProjectName
+        - repositoryName
+        - pipelineName
+      properties:
+        azureDevOpsOrganization:
+          title: Azure-DevOps-Organisation
+          type: string
+          description: Name der Azure-DevOps-Organisation.
+          default: my-organization
+        azureDevOpsProjectName:
+          title: Azure-DevOps-Projektname
+          type: string
+          description: Name des Zielprojekts in Azure DevOps.
+          default: manufacturing-dev
+        repositoryName:
+          title: Repository-Name
+          type: string
+          description: Name des zukünftigen Azure-DevOps-Repositories.
+          default: generated-manufacturing-service
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        pipelineName:
+          title: Pipeline-Name
+          type: string
+          description: Name der zukünftigen Azure-DevOps-Pipeline.
+          default: generated-manufacturing-service-ci
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+
+  steps:
+    - id: fetch-template
+      name: Service-Struktur generieren
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          componentName: ${{ parameters.componentName }}
+          componentTitle: ${{ parameters.componentTitle }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          azureDevOpsProject: ${{ parameters.azureDevOpsProject }}
+          lifecycle: ${{ parameters.lifecycle }}
+          azureDevOpsOrganization: ${{ parameters.azureDevOpsOrganization }}
+          azureDevOpsProjectName: ${{ parameters.azureDevOpsProjectName }}
+          repositoryName: ${{ parameters.repositoryName }}
+          pipelineName: ${{ parameters.pipelineName }}
+
+    - id: debug
+      name: Ergebnis anzeigen
+      action: debug:log
+      input:
+        message: >
+          Die Service-Struktur wurde vorbereitet.
+          Component: ${{ parameters.componentName }}.
+          Repository: ${{ parameters.repositoryName }}.
+          Pipeline: ${{ parameters.pipelineName }}.
+          Azure DevOps Projekt: ${{ parameters.azureDevOpsProjectName }}.
+
+  output:
+    text:
+      - title: Generierte Component
+        content: ${{ parameters.componentName }}
+
+      - title: Owner
+        content: ${{ parameters.owner }}
+
+      - title: System
+        content: ${{ parameters.system }}
+
+      - title: Azure DevOps Resource
+        content: ${{ parameters.azureDevOpsProject }}
+
+      - title: Repository
+        content: ${{ parameters.repositoryName }}
+
+      - title: Pipeline
+        content: ${{ parameters.pipelineName }}
+
+      - title: Status
+        content: >
+          Die Service-Struktur wurde im temporären Scaffolder-Workspace generiert.
+          Es wurde noch kein Repository erstellt, keine Pipeline erzeugt und keine
+          automatische Registrierung im Catalog durchgeführt.

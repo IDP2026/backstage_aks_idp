@@ -1,0 +1,49 @@
+# Pipeline-Platzhalter für den generierten Service.
+# Diese Datei dient als Ausgangspunkt für eine spätere Azure-DevOps-CI/CD-Integration.
+
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  serviceName: ${{ values.componentName }}
+  serviceOwner: ${{ values.owner }}
+  serviceSystem: ${{ values.system }}
+  azureDevOpsOrganization: ${{ values.azureDevOpsOrganization }}
+  azureDevOpsProject: ${{ values.azureDevOpsProjectName }}
+  repositoryName: ${{ values.repositoryName }}
+  pipelineName: ${{ values.pipelineName }}
+
+stages:
+  - stage: Validate
+    displayName: Service validieren
+    jobs:
+      - job: ValidateService
+        displayName: Struktur und Metadaten prüfen
+        steps:
+          - script: |
+              echo "Service: $(serviceName)"
+              echo "Owner: $(serviceOwner)"
+              echo "System: $(serviceSystem)"
+              echo "Azure DevOps Organization: $(azureDevOpsOrganization)"
+              echo "Azure DevOps Project: $(azureDevOpsProject)"
+              echo "Repository: $(repositoryName)"
+              echo "Pipeline: $(pipelineName)"
+              echo "Validierung erfolgreich abgeschlossen."
+            displayName: Service-Metadaten anzeigen
+
+  - stage: Build
+    displayName: Service bauen
+    dependsOn: Validate
+    jobs:
+      - job: BuildService
+        displayName: Build-Platzhalter
+        steps:
+          - script: |
+              echo "Build-Schritt für $(serviceName) wird vorbereitet."
+              echo "Hier wird später der echte Build-Prozess ergänzt."
+            displayName: Build vorbereiten

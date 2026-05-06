@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ${{ values.requestName }}
+  title: ${{ values.requestName }}
+  description: >
+    Vorbereitete Azure-DevOps-Berechtigungsanfrage für ${{ values.targetProject }}.
+  tags:
+    - azure-devops
+    - permissions
+    - rbac
+spec:
+  type: permission-request
+  owner: ${{ values.owner }}
+  system: ${{ values.system }}

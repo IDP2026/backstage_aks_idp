@@ -1,0 +1,119 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: ado-pipeline-bootstrap-template
+  title: Azure DevOps Pipeline Bootstrap Template
+  description: >
+    Vorlage zur standardisierten Vorbereitung einer Azure-DevOps-Pipeline
+    mit Validierungs- und Build-Struktur.
+  tags:
+    - azure-devops
+    - pipeline
+    - ci-cd
+spec:
+  owner: group:default/platform-team
+  type: service
+
+  parameters:
+    - title: Pipeline-Informationen
+      required:
+        - pipelineName
+        - serviceName
+        - description
+      properties:
+        pipelineName:
+          title: Pipeline-Name
+          type: string
+          default: platform-service-ci
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        serviceName:
+          title: Service-Name
+          type: string
+          default: platform-service
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        description:
+          title: Beschreibung
+          type: string
+          description: Beschreibung der Pipeline.
+
+    - title: Governance-Zuordnung
+      required:
+        - owner
+        - system
+        - lifecycle
+      properties:
+        owner:
+          title: Verantwortliches Team
+          type: string
+          default: group:default/platform-team
+        system:
+          title: Zugehöriges System
+          type: string
+          default: developer-platform
+        lifecycle:
+          title: Lebenszyklus
+          type: string
+          default: experimental
+          enum:
+            - experimental
+            - production
+            - deprecated
+
+    - title: Azure-DevOps-Metadaten
+      required:
+        - azureDevOpsOrganization
+        - azureDevOpsProjectName
+        - repositoryName
+      properties:
+        azureDevOpsOrganization:
+          title: Azure-DevOps-Organisation
+          type: string
+          default: my-organization
+        azureDevOpsProjectName:
+          title: Azure-DevOps-Projektname
+          type: string
+          default: platform-dev
+        repositoryName:
+          title: Repository-Name
+          type: string
+          default: platform-service
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+
+  steps:
+    - id: fetch-template
+      name: Pipeline-Struktur generieren
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          pipelineName: ${{ parameters.pipelineName }}
+          serviceName: ${{ parameters.serviceName }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          lifecycle: ${{ parameters.lifecycle }}
+          azureDevOpsOrganization: ${{ parameters.azureDevOpsOrganization }}
+          azureDevOpsProjectName: ${{ parameters.azureDevOpsProjectName }}
+          repositoryName: ${{ parameters.repositoryName }}
+
+    - id: debug
+      name: Ergebnis anzeigen
+      action: debug:log
+      input:
+        message: >
+          Pipeline-Struktur wurde vorbereitet.
+          Pipeline: ${{ parameters.pipelineName }}.
+          Repository: ${{ parameters.repositoryName }}.
+
+  output:
+    text:
+      - title: Pipeline
+        content: ${{ parameters.pipelineName }}
+      - title: Repository
+        content: ${{ parameters.repositoryName }}
+      - title: Owner
+        content: ${{ parameters.owner }}
+      - title: Status
+        content: >
+          Die Pipeline-Struktur wurde vorbereitet.
+          Es wurde noch keine echte Azure-DevOps-Pipeline erstellt.

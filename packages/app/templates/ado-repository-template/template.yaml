@@ -1,0 +1,128 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: ado-repository-template
+  title: Azure DevOps Repository Template
+  description: >
+    Vorlage zur standardisierten Vorbereitung eines Azure-DevOps-Repositories
+    mit Catalog-Metadaten, Dokumentation und Pipeline-Grundstruktur.
+  tags:
+    - azure-devops
+    - repository
+    - golden-path
+spec:
+  owner: group:default/platform-team
+  type: service
+
+  parameters:
+    - title: Repository-Informationen
+      required:
+        - repositoryName
+        - repositoryTitle
+        - description
+      properties:
+        repositoryName:
+          title: Repository-Name
+          type: string
+          description: Technischer Name des zukünftigen Azure-DevOps-Repositories.
+          default: platform-service-repository
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        repositoryTitle:
+          title: Anzeigename
+          type: string
+          description: Lesbarer Name des Repositories.
+          default: Platform Service Repository
+        description:
+          title: Beschreibung
+          type: string
+          description: Fachliche oder technische Beschreibung des Repositories.
+
+    - title: Governance-Zuordnung
+      required:
+        - owner
+        - system
+        - azureDevOpsProject
+        - lifecycle
+      properties:
+        owner:
+          title: Verantwortliches Team
+          type: string
+          default: group:default/platform-team
+        system:
+          title: Zugehöriges System
+          type: string
+          default: developer-platform
+        azureDevOpsProject:
+          title: Azure-DevOps-Resource im Catalog
+          type: string
+          default: azure-devops-project
+        lifecycle:
+          title: Lebenszyklus
+          type: string
+          default: experimental
+          enum:
+            - experimental
+            - production
+            - deprecated
+
+    - title: Azure-DevOps-Metadaten
+      required:
+        - azureDevOpsOrganization
+        - azureDevOpsProjectName
+        - pipelineName
+      properties:
+        azureDevOpsOrganization:
+          title: Azure-DevOps-Organisation
+          type: string
+          default: my-organization
+        azureDevOpsProjectName:
+          title: Azure-DevOps-Projektname
+          type: string
+          default: platform-dev
+        pipelineName:
+          title: Pipeline-Name
+          type: string
+          default: platform-service-repository-ci
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+
+  steps:
+    - id: fetch-template
+      name: Repository-Struktur generieren
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          repositoryName: ${{ parameters.repositoryName }}
+          repositoryTitle: ${{ parameters.repositoryTitle }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          azureDevOpsProject: ${{ parameters.azureDevOpsProject }}
+          lifecycle: ${{ parameters.lifecycle }}
+          azureDevOpsOrganization: ${{ parameters.azureDevOpsOrganization }}
+          azureDevOpsProjectName: ${{ parameters.azureDevOpsProjectName }}
+          pipelineName: ${{ parameters.pipelineName }}
+
+    - id: debug
+      name: Ergebnis anzeigen
+      action: debug:log
+      input:
+        message: >
+          Repository-Struktur wurde vorbereitet.
+          Repository: ${{ parameters.repositoryName }}.
+          Pipeline: ${{ parameters.pipelineName }}.
+
+  output:
+    text:
+      - title: Repository
+        content: ${{ parameters.repositoryName }}
+      - title: Owner
+        content: ${{ parameters.owner }}
+      - title: System
+        content: ${{ parameters.system }}
+      - title: Pipeline
+        content: ${{ parameters.pipelineName }}
+      - title: Status
+        content: >
+          Die Repository-Struktur wurde im temporären Scaffolder-Workspace generiert.
+          Es wurde noch kein echtes Azure-DevOps-Repository erstellt.

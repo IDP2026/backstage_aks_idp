@@ -1,0 +1,9 @@
+request:
+  name: ${{ values.requestName }}
+  requester: ${{ values.requester }}
+  targetProject: ${{ values.targetProject }}
+  targetGroup: ${{ values.targetGroup }}
+  accessLevel: ${{ values.accessLevel }}
+  justification: >
+    ${{ values.justification }}
+  status: prepared

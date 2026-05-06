@@ -1,0 +1,110 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: ado-permission-request-template
+  title: Azure DevOps Permission Request Template
+  description: >
+    Vorlage zur standardisierten Vorbereitung einer Berechtigungsanfrage
+    für Azure-DevOps-Projekte, Gruppen und Zugriffsrollen.
+  tags:
+    - azure-devops
+    - rbac
+    - permissions
+spec:
+  owner: group:default/platform-team
+  type: service
+
+  parameters:
+    - title: Berechtigungsanfrage
+      required:
+        - requestName
+        - targetProject
+        - targetGroup
+        - accessLevel
+        - justification
+      properties:
+        requestName:
+          title: Name der Anfrage
+          type: string
+          default: ado-project-access-request
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        targetProject:
+          title: Azure-DevOps-Projekt
+          type: string
+          default: platform-dev
+        targetGroup:
+          title: Zielgruppe
+          type: string
+          default: platform-team
+        accessLevel:
+          title: Zugriffsebene
+          type: string
+          default: reader
+          enum:
+            - reader
+            - contributor
+            - administrator
+        justification:
+          title: Begründung
+          type: string
+          description: Fachliche Begründung für die angeforderte Berechtigung.
+
+    - title: Governance-Zuordnung
+      required:
+        - requester
+        - owner
+        - system
+      properties:
+        requester:
+          title: Antragsteller
+          type: string
+          default: user:default/koffi
+        owner:
+          title: Verantwortliches Team
+          type: string
+          default: group:default/platform-team
+        system:
+          title: Zugehöriges System
+          type: string
+          default: governance-platform
+
+  steps:
+    - id: fetch-template
+      name: Berechtigungsanfrage generieren
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          requestName: ${{ parameters.requestName }}
+          targetProject: ${{ parameters.targetProject }}
+          targetGroup: ${{ parameters.targetGroup }}
+          accessLevel: ${{ parameters.accessLevel }}
+          justification: ${{ parameters.justification }}
+          requester: ${{ parameters.requester }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+
+    - id: debug
+      name: Ergebnis anzeigen
+      action: debug:log
+      input:
+        message: >
+          Berechtigungsanfrage wurde vorbereitet.
+          Projekt: ${{ parameters.targetProject }}.
+          Gruppe: ${{ parameters.targetGroup }}.
+          Zugriff: ${{ parameters.accessLevel }}.
+
+  output:
+    text:
+      - title: Anfrage
+        content: ${{ parameters.requestName }}
+      - title: Projekt
+        content: ${{ parameters.targetProject }}
+      - title: Gruppe
+        content: ${{ parameters.targetGroup }}
+      - title: Zugriff
+        content: ${{ parameters.accessLevel }}
+      - title: Status
+        content: >
+          Die Berechtigungsanfrage wurde vorbereitet.
+          Es wurde noch keine echte Azure-DevOps-Berechtigung geändert.
