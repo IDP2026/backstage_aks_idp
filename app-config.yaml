@@ -56,3 +56,7 @@ catalog:
       rules:
         - allow:
             - Template
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
