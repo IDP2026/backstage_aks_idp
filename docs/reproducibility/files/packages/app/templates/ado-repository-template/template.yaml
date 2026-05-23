@@ -1,0 +1,152 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: ado-repository-template
+  title: ADO Repository Template
+  description: >
+    Vorlage zur standardisierten Vorbereitung und Veröffentlichung eines
+    Repository-Grundgerüsts über Backstage. Die generierten Dateien werden
+    in einem GitHub-Repository veröffentlicht und können später für
+    Azure-DevOps-Automatisierung erweitert werden.
+  tags:
+    - azure-devops
+    - repository
+    - github
+    - golden-path
+spec:
+  owner: group:default/platform-team
+  type: service
+
+  parameters:
+    - title: Repository-Informationen
+      required:
+        - repositoryName
+        - repositoryTitle
+        - description
+      properties:
+        repositoryName:
+          title: Repository-Name
+          type: string
+          description: Technischer Name des zukünftigen Repositories.
+          default: demo-platform-repository
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        repositoryTitle:
+          title: Anzeigename
+          type: string
+          description: Lesbarer Name des Repositories.
+          default: Demo Platform Repository
+        description:
+          title: Beschreibung
+          type: string
+          description: Fachliche oder technische Beschreibung des Repositories.
+          default: Repository zur Validierung der GitHub-Veröffentlichung über Backstage.
+
+    - title: Governance-Zuordnung
+      required:
+        - owner
+        - system
+        - azureDevOpsProject
+        - lifecycle
+      properties:
+        owner:
+          title: Verantwortliches Team
+          type: string
+          description: Backstage Owner-Referenz des verantwortlichen Teams.
+          default: group:default/platform-team
+        system:
+          title: Zugehöriges System
+          type: string
+          description: Backstage System, dem das Repository zugeordnet wird.
+          default: developer-platform
+        azureDevOpsProject:
+          title: Azure-DevOps-Resource im Catalog
+          type: string
+          description: Backstage Resource, die das Zielprojekt repräsentiert.
+          default: azure-devops-project
+        lifecycle:
+          title: Lebenszyklus
+          type: string
+          description: Lebenszyklus der Komponente.
+          default: experimental
+          enum:
+            - experimental
+            - production
+            - deprecated
+
+    - title: Azure-DevOps-Metadaten
+      required:
+        - azureDevOpsOrganization
+        - azureDevOpsProjectName
+        - pipelineName
+      properties:
+        azureDevOpsOrganization:
+          title: Azure-DevOps-Organisation
+          type: string
+          description: Name der Azure-DevOps-Organisation.
+          default: my-organization
+        azureDevOpsProjectName:
+          title: Azure-DevOps-Projektname
+          type: string
+          description: Name des Azure-DevOps-Projekts.
+          default: platform-dev
+        pipelineName:
+          title: Pipeline-Name
+          type: string
+          description: Name der vorbereiteten Pipeline.
+          default: demo-platform-repository-ci
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+
+
+  steps:
+    - id: fetch-template
+      name: Repository-Struktur generieren
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          repositoryName: ${{ parameters.repositoryName }}
+          repositoryTitle: ${{ parameters.repositoryTitle }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          azureDevOpsProject: ${{ parameters.azureDevOpsProject }}
+          lifecycle: ${{ parameters.lifecycle }}
+          azureDevOpsOrganization: ${{ parameters.azureDevOpsOrganization }}
+          azureDevOpsProjectName: ${{ parameters.azureDevOpsProjectName }}
+          pipelineName: ${{ parameters.pipelineName }}
+
+    - id: publish
+      name: Repository nach GitHub veröffentlichen
+      action: publish:github
+      input:
+        repoUrl: github.com?repo=${{ parameters.repositoryName }}&owner=IDP2026
+        defaultBranch: main
+        repoVisibility: private
+        description: ${{ parameters.description }}
+
+    - id: debug
+      name: Ergebnis anzeigen
+      action: debug:log
+      input:
+        message: >
+          Repository-Struktur wurde generiert und nach GitHub veröffentlicht.
+          Repository-Ziel: github.com?repo=${{ parameters.repositoryName }}&owner=IDP2026.
+
+  output:
+    text:
+      - title: Repository
+        content: ${{ parameters.repositoryName }}
+      - title: Owner
+        content: ${{ parameters.owner }}
+      - title: System
+        content: ${{ parameters.system }}
+      - title: Pipeline
+        content: ${{ parameters.pipelineName }}
+      - title: GitHub Repository
+        content: ${{ steps.publish.output.remoteUrl }}
+      - title: Status
+        content: >
+          Die Repository-Struktur wurde generiert und in GitHub veröffentlicht.
+    links:
+      - title: GitHub Repository öffnen
+        url: ${{ steps.publish.output.remoteUrl }}

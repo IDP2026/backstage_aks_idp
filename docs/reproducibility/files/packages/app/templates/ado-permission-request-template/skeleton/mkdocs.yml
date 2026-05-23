@@ -1,0 +1,8 @@
+site_name: ${{ values.requestName }}
+site_description: Dokumentation für Berechtigungsanfrage ${{ values.requestName }}
+
+nav:
+  - Überblick: index.md
+
+plugins:
+  - techdocs-core

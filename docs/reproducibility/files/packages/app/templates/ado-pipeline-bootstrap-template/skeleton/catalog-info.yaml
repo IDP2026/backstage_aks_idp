@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ${{ values.pipelineName }}
+  title: ${{ values.pipelineName }}
+  description: >
+    ${{ values.description }}
+  tags:
+    - azure-devops
+    - pipeline
+    - generated
+spec:
+  type: ci-cd-pipeline
+  lifecycle: ${{ values.lifecycle }}
+  owner: ${{ values.owner }}
+  system: ${{ values.system }}

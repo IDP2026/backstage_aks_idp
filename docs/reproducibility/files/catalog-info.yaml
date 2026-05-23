@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: kuka-platform
+  description: Backstage platform component
+  annotations:
+    backstage.io/kubernetes-id: kuka-platform
+    backstage.io/kubernetes-namespace: idpapp
+spec:
+  type: website
+  owner: john@example.com
+  lifecycle: experimental

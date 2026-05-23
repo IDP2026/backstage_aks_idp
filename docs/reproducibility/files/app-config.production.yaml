@@ -1,0 +1,40 @@
+app:
+  baseUrl: http://localhost:3000
+
+backend:
+  baseUrl: http://localhost:7007
+  listen:
+    port: 7007
+    host: 0.0.0.0
+
+  # DB en SQLite (un fichier par plugin dans un dossier)
+  database:
+    client: better-sqlite3
+    connection:
+      directory: /app/data
+    useNullAsDefault: true
+
+  # TEMP MVP: autoriser les appels sans session (curl)
+  auth:
+    dangerouslyDisableDefaultAuthPolicy: true
+
+auth:
+  providers:
+    guest: {}
+
+# IMPORTANT: évite les warnings "file ... does not exist" si /app/examples n'est pas dans l'image
+catalog:
+  locations:
+    - type: file
+      target: /app/catalog-info.yaml
+
+kubernetes:
+  serviceLocatorMethod:
+    type: multiTenant
+  clusterLocatorMethods:
+    - type: config
+      clusters:
+        - name: aks
+          url: https://kubernetes.default.svc
+          authProvider: serviceAccount
+          skipTLSVerify: false

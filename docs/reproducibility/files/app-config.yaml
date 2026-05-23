@@ -1,0 +1,62 @@
+app:
+  title: Backstage
+  baseUrl: http://localhost:3000
+backend:
+  baseUrl: http://localhost:7007
+  listen:
+    host: 0.0.0.0
+    port: 7007
+auth:
+  environment: development
+  providers:
+    guest: {}
+permission:
+  enabled: false
+catalog:
+  rules:
+    - allow:
+        - Component
+        - System
+        - API
+        - Resource
+        - Location
+        - User
+        - Group
+        - Template
+  locations:
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog-info.yaml
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/components/manufacturing-api.yaml
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/systems/manufacturing-platform.yaml
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/resources/azdo-manufacturing-dev.yaml
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/org/platform-team.yaml
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/org/koffi.yaml
+    - type: file
+      target: /home/koffi/backstage_aks_idp/packages/app/templates/azure-devops-service-template/template.yaml
+      rules:
+        - allow:
+            - Template
+    - type: file
+      target: /home/koffi/backstage_aks_idp/packages/app/templates/ado-repository-template/template.yaml
+      rules:
+        - allow:
+            - Template
+    - type: file
+      target: /home/koffi/backstage_aks_idp/packages/app/templates/ado-pipeline-bootstrap-template/template.yaml
+      rules:
+        - allow:
+            - Template
+    - type: file
+      target: /home/koffi/backstage_aks_idp/packages/app/templates/ado-permission-request-template/template.yaml
+      rules:
+        - allow:
+            - Template
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
