@@ -1,0 +1,2 @@
+# Verantwortlicher Code Owner für das gesamte Repository
+* @${{ values.codeOwnerUsername }}

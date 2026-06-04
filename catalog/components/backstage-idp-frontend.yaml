@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: backstage-idp-frontend
+  title: Backstage IDP Frontend
+  description: Weboberfläche des Backstage-basierten Internal Developer Platform Prototyps.
+  tags:
+    - backstage
+    - frontend
+    - developer-portal
+spec:
+  type: website
+  lifecycle: experimental
+  owner: group:default/platform-team
+  system: developer-platform

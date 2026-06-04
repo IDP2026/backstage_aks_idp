@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${{ values.serviceName }}
+  namespace: ${{ values.namespace }}
+  labels:
+    app.kubernetes.io/name: ${{ values.serviceName }}
+    app.kubernetes.io/part-of: ${{ values.system }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ${{ values.serviceName }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ${{ values.serviceName }}
+        backstage.io/kubernetes-id: ${{ values.serviceName }}
+    spec:
+      containers:
+        - name: ${{ values.serviceName }}
+          image: ghcr.io/${{ values.githubOwner }}/${{ values.repositoryName }}:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: ${{ values.containerPort }}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: ${{ values.containerPort }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: ${{ values.containerPort }}
+            initialDelaySeconds: 20
+            periodSeconds: 20

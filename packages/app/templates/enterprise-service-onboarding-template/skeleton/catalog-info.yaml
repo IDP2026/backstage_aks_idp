@@ -1,0 +1,22 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.serviceName }}
+  title: ${{ values.serviceTitle }}
+  description: ${{ values.description }}
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: ${{ values.githubOwner }}/${{ values.repositoryName }}
+    backstage.io/kubernetes-id: ${{ values.serviceName }}
+    backstage.io/kubernetes-namespace: ${{ values.namespace }}
+  tags:
+    - enterprise
+    - golden-path
+    - ${{ values.runtime }}
+    - ${{ values.lifecycle }}
+    - ${{ values.dataClassification }}
+spec:
+  type: service
+  lifecycle: ${{ values.lifecycle }}
+  owner: ${{ values.owner }}
+  system: ${{ values.system }}

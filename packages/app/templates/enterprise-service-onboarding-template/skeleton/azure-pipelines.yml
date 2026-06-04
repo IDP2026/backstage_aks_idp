@@ -1,0 +1,36 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  serviceName: '${{ values.serviceName }}'
+  imageName: '${{ values.repositoryName }}'
+
+stages:
+  - stage: Validate
+    displayName: Validate service
+    jobs:
+      - job: Validate
+        displayName: Validate generated structure
+        steps:
+          - script: |
+              echo "Validating service structure"
+              test -f catalog-info.yaml
+              test -f Dockerfile
+              test -f mkdocs.yml
+              test -f k8s/deployment.yaml
+              test -f k8s/service.yaml
+            displayName: Validate required files
+
+  - stage: Build
+    displayName: Build container image
+    dependsOn: Validate
+    jobs:
+      - job: Build
+        displayName: Build Docker image
+        steps:
+          - script: |
+              echo "Docker build placeholder for ${{ values.serviceName }}"
+              docker build -t ${{ values.githubOwner }}/${{ values.repositoryName }}:latest .
+            displayName: Build Docker image

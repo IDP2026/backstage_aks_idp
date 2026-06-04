@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: kuka-platform
+  title: kuka-platform
+  description: Backstage platform component representing the internal developer platform instance.
+spec:
+  type: website
+  lifecycle: experimental
+  owner: user:default/koffitse-aboudou

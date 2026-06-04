@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${{ values.serviceName }}
+  namespace: ${{ values.namespace }}
+  labels:
+    app.kubernetes.io/name: ${{ values.serviceName }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: ${{ values.serviceName }}
+  ports:
+    - name: http
+      port: ${{ values.servicePort }}
+      targetPort: ${{ values.containerPort }}

@@ -36,6 +36,21 @@ catalog:
       target: /home/koffi/backstage_aks_idp/catalog/org/platform-team.yaml
     - type: file
       target: /home/koffi/backstage_aks_idp/catalog/org/koffi.yaml
+
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/org/koffitse-aboudou.yaml
+
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/systems/developer-platform.yaml
+
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/components/backstage-idp-frontend.yaml
+
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/components/backstage-idp-backend.yaml
+
+    - type: file
+      target: /home/koffi/backstage_aks_idp/catalog/components/github-publishing-integration.yaml
     - type: file
       target: /home/koffi/backstage_aks_idp/packages/app/templates/azure-devops-service-template/template.yaml
       rules:
@@ -53,6 +68,12 @@ catalog:
             - Template
     - type: file
       target: /home/koffi/backstage_aks_idp/packages/app/templates/ado-permission-request-template/template.yaml
+      rules:
+        - allow:
+            - Template
+
+    - type: file
+      target: /home/koffi/backstage_aks_idp/packages/app/templates/enterprise-service-onboarding-template/template.yaml
       rules:
         - allow:
             - Template

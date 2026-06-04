@@ -1,0 +1,10 @@
+site_name: ${{ values.serviceTitle }}
+site_description: ${{ values.description }}
+
+nav:
+  - Home: index.md
+  - Architektur: architecture.md
+  - Runbook: runbook.md
+
+plugins:
+  - techdocs-core

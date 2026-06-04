@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: github-publishing-integration
+  title: GitHub Publishing Integration
+  description: Scaffolder-basierte Integration zur automatisierten Veröffentlichung generierter Repository-Strukturen nach GitHub.
+  tags:
+    - github
+    - scaffolder
+    - automation
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/platform-team
+  system: developer-platform

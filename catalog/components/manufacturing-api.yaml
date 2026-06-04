@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: manufacturing-api
+  title: Manufacturing API
+  description: Beispielhafte API für die Manufacturing Platform zur Demonstration von Backend-Services und Azure DevOps Integration.
+  tags:
+    - api
+    - backend
+    - azure-devops
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/platform-team
+  system: manufacturing-platform

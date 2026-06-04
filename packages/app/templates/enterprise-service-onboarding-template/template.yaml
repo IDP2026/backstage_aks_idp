@@ -1,0 +1,215 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: enterprise-service-onboarding-template
+  title: Enterprise Service Onboarding Golden Path
+  description: >
+    Vollständiger Enterprise-Golden-Path zur standardisierten Erstellung eines neuen Services
+    mit Repository, Catalog-Metadaten, Dokumentation, Dockerfile, CI/CD-Grundlage,
+    Kubernetes-Manifests, Security-Dateien und Readiness-Checkliste.
+  tags:
+    - enterprise
+    - golden-path
+    - service
+    - github
+    - kubernetes
+    - ci-cd
+spec:
+  owner: group:default/platform-team
+  type: service
+
+  parameters:
+    - title: Service-Informationen
+      required:
+        - serviceName
+        - serviceTitle
+        - description
+      properties:
+        serviceName:
+          title: Technischer Servicename
+          type: string
+          description: Kleingeschriebener technischer Name, z.B. order-service.
+          default: enterprise-demo-service
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        serviceTitle:
+          title: Anzeigename
+          type: string
+          description: Lesbarer Name des Services.
+          default: Enterprise Demo Service
+        description:
+          title: Beschreibung
+          type: string
+          description: Fachliche oder technische Kurzbeschreibung des Services.
+          default: Standardisierter Enterprise-Service, der über Backstage erzeugt wurde.
+
+    - title: Governance und Catalog-Zuordnung
+      required:
+        - owner
+        - system
+        - lifecycle
+        - businessCriticality
+        - dataClassification
+      properties:
+        owner:
+          title: Verantwortlicher Owner
+          type: string
+          default: group:default/platform-team
+        system:
+          title: Zugehöriges System
+          type: string
+          default: manufacturing-platform
+        lifecycle:
+          title: Lebenszyklus
+          type: string
+          default: experimental
+          enum:
+            - experimental
+            - production
+            - deprecated
+        businessCriticality:
+          title: Business Criticality
+          type: string
+          default: medium
+          enum:
+            - low
+            - medium
+            - high
+            - critical
+        dataClassification:
+          title: Data Classification
+          type: string
+          default: internal
+          enum:
+            - public
+            - internal
+            - confidential
+            - restricted
+
+    - title: GitHub-Veröffentlichung
+      required:
+        - githubOwner
+        - repositoryName
+        - codeOwnerUsername
+      properties:
+        githubOwner:
+          title: GitHub Owner oder Organisation
+          type: string
+          description: GitHub User oder Organisation, unter der das Repository erstellt wird.
+          default: IDP2026
+        repositoryName:
+          title: Repository-Name
+          type: string
+          default: enterprise-demo-service
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        codeOwnerUsername:
+          title: GitHub CODEOWNER
+          type: string
+          description: GitHub Username oder Team ohne @.
+          default: IDP2026
+
+    - title: Deployment-Vorbereitung
+      required:
+        - namespace
+        - servicePort
+        - containerPort
+        - serviceHost
+      properties:
+        namespace:
+          title: Kubernetes Namespace
+          type: string
+          default: idpapp
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        servicePort:
+          title: Service Port
+          type: number
+          default: 80
+        containerPort:
+          title: Container Port
+          type: number
+          default: 8080
+        serviceHost:
+          title: Ingress Host
+          type: string
+          default: enterprise-demo-service.local
+
+    - title: CI/CD-Metadaten
+      required:
+        - pipelineName
+        - runtime
+      properties:
+        pipelineName:
+          title: Pipeline-Name
+          type: string
+          default: enterprise-demo-service-ci
+          pattern: '^[a-z0-9]+(-[a-z0-9]+)*$'
+        runtime:
+          title: Runtime
+          type: string
+          default: nodejs
+          enum:
+            - nodejs
+            - python
+            - java
+            - dotnet
+
+  steps:
+    - id: fetch-template
+      name: Enterprise-Service-Struktur generieren
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          serviceName: ${{ parameters.serviceName }}
+          serviceTitle: ${{ parameters.serviceTitle }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          lifecycle: ${{ parameters.lifecycle }}
+          businessCriticality: ${{ parameters.businessCriticality }}
+          dataClassification: ${{ parameters.dataClassification }}
+          githubOwner: ${{ parameters.githubOwner }}
+          repositoryName: ${{ parameters.repositoryName }}
+          codeOwnerUsername: ${{ parameters.codeOwnerUsername }}
+          namespace: ${{ parameters.namespace }}
+          servicePort: ${{ parameters.servicePort }}
+          containerPort: ${{ parameters.containerPort }}
+          serviceHost: ${{ parameters.serviceHost }}
+          pipelineName: ${{ parameters.pipelineName }}
+          runtime: ${{ parameters.runtime }}
+
+    - id: publish
+      name: Enterprise-Service nach GitHub veröffentlichen
+      action: publish:github
+      input:
+        repoUrl: github.com?owner=${{ parameters.githubOwner }}&repo=${{ parameters.repositoryName }}
+        defaultBranch: main
+        repoVisibility: private
+        description: ${{ parameters.description }}
+
+    - id: debug
+      name: Ergebnis anzeigen
+      action: debug:log
+      input:
+        message: |
+          Enterprise Service wurde generiert und nach GitHub veröffentlicht.
+          Repository: github.com?owner=${{ parameters.githubOwner }}&repo=${{ parameters.repositoryName }}
+          Service: ${{ parameters.serviceName }}
+          Owner: ${{ parameters.owner }}
+          System: ${{ parameters.system }}
+
+  output:
+    text:
+      - title: Service
+        content: ${{ parameters.serviceName }}
+      - title: Owner
+        content: ${{ parameters.owner }}
+      - title: System
+        content: ${{ parameters.system }}
+      - title: Repository
+        content: ${{ steps.publish.output.remoteUrl }}
+      - title: Status
+        content: |
+          Der Enterprise-Service wurde standardisiert vorbereitet und in GitHub veröffentlicht.
+    links:
+      - title: GitHub Repository öffnen
+        url: ${{ steps.publish.output.remoteUrl }}
