@@ -20,17 +20,17 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      ✅ NEU
+      # Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      ✅ NEU
+      # Install dependencies
       - name: Install dependencies
         run: yarn install
 
-      ✅ DAS IST DER ENTSCHEIDENDE FIX
+      # IMPORTANT: generate backend artifacts (bundle.tar.gz)
       - name: Build backend artifacts
         run: yarn build:backend
 
@@ -41,7 +41,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      ✅ JETZT FUNKTIONIERT DOCKER
+      # Build and push image
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
